@@ -1,5 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:learnflow/screens/home_page.dart';
+import 'package:learnflow/screens/sign_up.dart';
 import '../textField_widget/custom_button.dart';
 import '../textField_widget/text_field.dart';
 import '../theme/app_colors.dart';
@@ -111,6 +113,7 @@ class SignIn extends StatelessWidget {
                     CustomButton(
                       text: 'Sign In',
                       onPressed: () {
+                        Navigator.pushNamed(context, '/home');
                       },
                     ),
                     const SizedBox(height: 12),
@@ -125,7 +128,7 @@ class SignIn extends StatelessWidget {
                           ),
                           children: [
                             TextSpan(
-                              text: 'Create one',
+                              text: 'Sign up',
                               style: const TextStyle(
                                 color: AppColors.oceanBlue,
                                 fontWeight: FontWeight.bold,
@@ -135,7 +138,7 @@ class SignIn extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const SignIn(),
+                                      builder: (context) => const SignUp(),
                                     ),
                                   );
                                 },

@@ -97,7 +97,9 @@ class SignUp extends StatelessWidget {
 
                     CustomButton(
                       text: 'Create Account',
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/home');
+                      },
                     ),
                     const SizedBox(height: 12),
 
