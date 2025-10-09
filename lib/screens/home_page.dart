@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, '/Settings');
+              Navigator.pushNamed(context, '/settings');
             },
             icon: const Icon(Icons.person),
             color: AppColors.deepSapphire,
@@ -135,7 +135,7 @@ class HomePage extends StatelessWidget {
                     subtitle: 'Manage your schedule',
                     color: AppColors.oceanBlue,
                     onTap: () {
-                      Navigator.pushNamed(context,'/TimeTable');
+                      Navigator.pushNamed(context,'/timetable');
                     },
                   ),
                   buildFeatureCard(
@@ -195,7 +195,7 @@ class HomePage extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context,'/TimeTable');
+                            Navigator.pushNamed(context,'/timetable');
                           },
                           child: const Text(
                             'View All',
