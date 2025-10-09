@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../item_widgets/buildFeatureCard.dart';
-import '../item_widgets/buildOverviewItem.dart';
-import '../item_widgets/buildScheduleCard.dart';
+import '../item_widgets/HomeWidgets/buildFeatureCard.dart';
+import '../item_widgets/HomeWidgets/buildOverviewItem.dart';
+import '../item_widgets/HomeWidgets/buildScheduleCard.dart';
 import '../theme/app_colors.dart';
 
 class HomePage extends StatelessWidget {
@@ -42,8 +42,10 @@ class HomePage extends StatelessWidget {
             color: AppColors.deepSapphire,
           ),
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.pushNamed(context, '/Settings');
+            },
+            icon: const Icon(Icons.person),
             color: AppColors.deepSapphire,
           ),
           IconButton(
@@ -132,7 +134,9 @@ class HomePage extends StatelessWidget {
                     title: 'Timetable',
                     subtitle: 'Manage your schedule',
                     color: AppColors.oceanBlue,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context,'/TimeTable');
+                    },
                   ),
                   buildFeatureCard(
                     icon: Icons.menu_book_rounded,
@@ -188,7 +192,9 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context,'/TimeTable');
+                          },
                           child: const Text(
                             'View All',
                             style: TextStyle(

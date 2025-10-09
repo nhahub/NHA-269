@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:learnflow/screens/TimeTable_Screen.dart';
 import 'package:learnflow/screens/home_page.dart';
+import 'package:learnflow/screens/settings_screen.dart';
 import 'package:learnflow/screens/sign_in.dart';
 import 'package:learnflow/screens/sign_up.dart';
 
@@ -19,6 +21,8 @@ class MyApp extends StatelessWidget {
         '/signUp': (context) => const SignUp(),
         '/signIn': (context) => const SignIn(),
         '/home': (context) => const HomePage(),
+        '/Settings':(context)=>const SettingsScreen(),
+        '/TimeTable':(context)=>TimetableScreen()
       },
     );
   }
