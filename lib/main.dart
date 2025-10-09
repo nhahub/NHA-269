@@ -4,6 +4,7 @@ import 'package:learnflow/screens/home_page.dart';
 import 'package:learnflow/screens/settings_screen.dart';
 import 'package:learnflow/screens/sign_in.dart';
 import 'package:learnflow/screens/sign_up.dart';
+import 'package:learnflow/screens/tasks_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,7 +23,8 @@ class MyApp extends StatelessWidget {
         '/signIn': (context) => const SignIn(),
         '/home': (context) => const HomePage(),
         '/Settings':(context)=>const SettingsScreen(),
-        '/TimeTable':(context)=>TimetableScreen()
+        '/TimeTable':(context)=>TimetableScreen(),
+        '/tasks': (context) => const TasksScreen(),
       },
     );
   }

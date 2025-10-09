@@ -150,7 +150,9 @@ class HomePage extends StatelessWidget {
                     title: 'Tasks',
                     subtitle: 'Track assignments',
                     color: AppColors.mintGreen,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context,'/tasks');
+                    },
                   ),
                   buildFeatureCard(
                     icon: Icons.center_focus_strong,
