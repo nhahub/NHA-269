@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../item_widgets/HomeWidgets/buildFeatureCard.dart';
-import '../item_widgets/HomeWidgets/buildOverviewItem.dart';
-import '../item_widgets/HomeWidgets/buildScheduleCard.dart';
+import '../Widgets/HomeWidgets/buildFeatureCard.dart';
+import '../Widgets/HomeWidgets/buildOverviewItem.dart';
+import '../Widgets/HomeWidgets/buildScheduleCard.dart';
 import '../theme/app_colors.dart';
 
 class HomePage extends StatelessWidget {

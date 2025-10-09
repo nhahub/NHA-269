@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import '../item_widgets/SettingsWidgets/AboutSection.dart';
-import '../item_widgets/SettingsWidgets/AccountSection.dart';
-import '../item_widgets/SettingsWidgets/DataStorageSection.dart';
-import '../item_widgets/SettingsWidgets/PreferencesSection.dart';
-import '../item_widgets/SettingsWidgets/SectionTitle.dart';
-import '../item_widgets/SettingsWidgets/SignOut.dart';
-import '../item_widgets/SettingsWidgets/StorageUsageSection.dart';
-import '../item_widgets/SettingsWidgets/SupportSection.dart';
-import '../item_widgets/SettingsWidgets/UserCard.dart';
+import '../Widgets/SettingsWidgets/AboutSection.dart';
+import '../Widgets/SettingsWidgets/AccountSection.dart';
+import '../Widgets/SettingsWidgets/DataStorageSection.dart';
+import '../Widgets/SettingsWidgets/PreferencesSection.dart';
+import '../Widgets/SettingsWidgets/SectionTitle.dart';
+import '../Widgets/SettingsWidgets/SignOut.dart';
+import '../Widgets/SettingsWidgets/StorageUsageSection.dart';
+import '../Widgets/SettingsWidgets/SupportSection.dart';
+import '../Widgets/SettingsWidgets/UserCard.dart';
 import '../theme/app_colors.dart';
 
 class SettingsScreen extends StatelessWidget {

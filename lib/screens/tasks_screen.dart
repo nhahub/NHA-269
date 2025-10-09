@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../item_widgets/TasksWidgets/progress_overview.dart';
-import '../item_widgets/TasksWidgets/section_title.dart';
-import '../item_widgets/TasksWidgets/task_card.dart';
+import '../Widgets/TasksWidgets/progress_overview.dart';
+import '../Widgets/TasksWidgets/section_title.dart';
+import '../Widgets/TasksWidgets/task_card.dart';
 import '../theme/app_colors.dart';
 
 

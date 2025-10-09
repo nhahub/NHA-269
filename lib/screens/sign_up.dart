@@ -1,8 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:learnflow/screens/sign_in.dart';
-import '../textField_widget/custom_button.dart';
-import '../textField_widget/text_field.dart';
+import '../Widgets/Shared/custom_button.dart';
+import '../Widgets/Shared/text_field.dart';
 import '../theme/app_colors.dart';
 
 class SignUp extends StatelessWidget {
