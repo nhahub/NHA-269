@@ -13,7 +13,7 @@ class ProgressOverview extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -53,7 +53,7 @@ class ProgressOverview extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(
               value: 2 / 6,
-              backgroundColor: AppColors.oceanBlue.withOpacity(0.2),
+              backgroundColor: AppColors.oceanBlue.withValues(alpha: 0.2),
               color: AppColors.oceanBlue,
               minHeight: 8,
             ),
@@ -79,7 +79,7 @@ class ProgressOverview extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: backgroundColor.withOpacity(0.1),
+        color: backgroundColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(

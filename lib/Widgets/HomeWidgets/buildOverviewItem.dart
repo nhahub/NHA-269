@@ -12,7 +12,7 @@ Widget buildOverviewItem({
     children: [
       Container(
         decoration: BoxDecoration(
-          color: color.withOpacity(0.15),
+          color: color.withValues(alpha: 0.15),
           shape: BoxShape.circle,
         ),
         padding: const EdgeInsets.all(10),

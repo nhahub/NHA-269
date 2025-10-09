@@ -18,7 +18,7 @@ Widget buildFeatureCard({
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),
@@ -30,7 +30,7 @@ Widget buildFeatureCard({
         children: [
           CircleAvatar(
             radius: 24,
-            backgroundColor: color.withOpacity(0.15),
+            backgroundColor: color.withValues(alpha: 0.15),
             child: Icon(icon, color: color, size: 26),
           ),
           const SizedBox(height: 10),
