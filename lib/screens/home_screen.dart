@@ -47,17 +47,20 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
-        actions: const [
+        actions: [
           IconButton(
             onPressed: null,
             icon: Icon(Icons.notifications_none),
             color: AppColors.deepSapphire,
           ),
           IconButton(
-            onPressed: null,
-            icon: Icon(Icons.person),
+            onPressed: () {
+              Navigator.pushNamed(context, '/settings');
+            },
+            icon: const Icon(Icons.person),
             color: AppColors.deepSapphire,
           ),
+
           IconButton(
             onPressed: null,
             icon: Icon(Icons.more_vert),
