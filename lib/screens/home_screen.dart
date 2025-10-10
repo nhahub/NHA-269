@@ -154,7 +154,9 @@ class HomeScreen extends StatelessWidget {
                     title: 'Materials',
                     subtitle: 'Access study resources',
                     color: AppColors.teal,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, '/Material');
+                    },
                   ),
                   buildFeatureCard(
                     icon: Icons.check_circle_outline,
@@ -170,7 +172,9 @@ class HomeScreen extends StatelessWidget {
                     title: 'Focus',
                     subtitle: 'Pomodoro timer',
                     color: AppColors.deepSapphire,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context,'/Focus');
+                    },
                   ),
                 ],
               ),
