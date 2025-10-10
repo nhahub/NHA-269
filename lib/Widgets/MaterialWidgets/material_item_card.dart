@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme/app_colors.dart';
 
 class MaterialItemCard extends StatelessWidget {
   final String title;
@@ -9,42 +10,44 @@ class MaterialItemCard extends StatelessWidget {
   final IconData icon;
 
   const MaterialItemCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.subject,
     required this.size,
     required this.time,
     required this.color,
     required this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black12,
-            blurRadius: 5,
-            offset: const Offset(0, 2),
+            color: Colors.black.withAlpha(13),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
       child: Row(
         children: [
+          // Icon with colored circular background
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(10),
+              color: color.withAlpha(30),
+              shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: Colors.black54),
+            child: Icon(icon, color: color, size: 28),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 16),
+          // Title and Subject
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,36 +55,46 @@ class MaterialItemCard extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                     fontSize: 16,
+                    color: AppColors.deepSapphire,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   subject,
-                  style: const TextStyle(
-                    color: Colors.blue,
+                  style: TextStyle(
+                    color: AppColors.grey,
                     fontSize: 14,
                   ),
                 ),
               ],
             ),
           ),
+          const SizedBox(width: 12),
+          // Size and Time
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
                 size,
-                style: const TextStyle(color: Colors.black54),
+                style: const TextStyle(
+                  color: AppColors.deepSapphire,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
               Text(
                 time,
-                style: const TextStyle(color: Colors.grey, fontSize: 12),
+                style: TextStyle(
+                  color: AppColors.grey,
+                  fontSize: 12,
+                ),
               ),
             ],
           ),
-          const SizedBox(width: 8),
-          const Icon(Icons.download_rounded, color: Colors.blue),
+          const SizedBox(width: 12),
+          // Download icon
+          Icon(Icons.download_rounded, color: AppColors.oceanBlue),
         ],
       ),
     );

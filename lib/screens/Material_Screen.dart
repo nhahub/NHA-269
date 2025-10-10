@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-
 import '../Widgets/MaterialWidgets/material_filter_bar.dart';
 import '../Widgets/MaterialWidgets/material_item_card.dart';
 import '../Widgets/MaterialWidgets/material_search_bar.dart';
 import '../Widgets/MaterialWidgets/material_storage_card.dart';
-
+import '../theme/app_colors.dart';
 
 class MaterialsScreen extends StatefulWidget {
-  const MaterialsScreen({Key? key}) : super(key: key);
+  const MaterialsScreen({super.key});
 
   @override
   State<MaterialsScreen> createState() => _MaterialsScreenState();
@@ -23,7 +22,7 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
       "subject": "Mathematics",
       "size": "2.4 MB",
       "time": "2 days ago",
-      "color": Colors.red.shade100,
+      "color": AppColors.teal,
       "icon": Icons.note,
     },
     {
@@ -32,7 +31,7 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
       "subject": "Physics",
       "size": "45.2 MB",
       "time": "1 week ago",
-      "color": Colors.blue.shade100,
+      "color": AppColors.oceanBlue,
       "icon": Icons.videocam,
     },
     {
@@ -41,7 +40,7 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
       "subject": "Chemistry",
       "size": "892 KB",
       "time": "3 days ago",
-      "color": Colors.green.shade100,
+      "color": AppColors.mintGreen,
       "icon": Icons.picture_as_pdf,
     },
     {
@@ -50,7 +49,7 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
       "subject": "History",
       "size": "1.8 MB",
       "time": "5 days ago",
-      "color": Colors.red.shade100,
+      "color": AppColors.teal,
       "icon": Icons.note,
     },
     {
@@ -59,7 +58,7 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
       "subject": "Biology",
       "size": "3.2 MB",
       "time": "1 week ago",
-      "color": Colors.green.shade100,
+      "color": AppColors.mintGreen,
       "icon": Icons.image,
     },
     {
@@ -68,7 +67,7 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
       "subject": "English",
       "size": "4.1 MB",
       "time": "1 week ago",
-      "color": Colors.red.shade100,
+      "color": AppColors.teal,
       "icon": Icons.note,
     },
   ];
@@ -80,65 +79,65 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
         : materials.where((m) => m["type"] == selectedFilter).toList();
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.lightGrey,
         titleSpacing: 0,
-        title: Row(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  "Materials",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                SizedBox(height: 2),
-                Text(
-                  "Access your study resources",
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              "Materials",
+              style: TextStyle(
+                color: AppColors.deepSapphire,
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
+              ),
+            ),
+            SizedBox(height: 2),
+            Text(
+              "Access your study resources",
+              style: TextStyle(
+                color: AppColors.grey,
+                fontSize: 14,
+              ),
             ),
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            MaterialSearchBar(
-              onChanged: (value) {
-              },
-            ),
-            const SizedBox(height: 16),
-            MaterialFilterBar(
-              selected: selectedFilter,
-              onFilterChanged: (filter) {
-                setState(() => selectedFilter = filter);
-              },
-            ),
-            const SizedBox(height: 16),
-            const MaterialStorageCard(
-              usedStorage: "156.8 MB",
-              totalStorage: "2 GB",
-              filesCount: 6,
-              progress: 0.08,
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: ListView.builder(
-                itemCount: filteredMaterials.length,
-                itemBuilder: (context, index) {
-                  final item = filteredMaterials[index];
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              // Search bar
+              MaterialSearchBar(
+                onChanged: (value) {},
+              ),
+              const SizedBox(height: 16),
+
+              // Filter bar
+              MaterialFilterBar(
+                selected: selectedFilter,
+                onFilterChanged: (filter) {
+                  setState(() => selectedFilter = filter);
+                },
+              ),
+              const SizedBox(height: 16),
+
+              // Storage card
+              const MaterialStorageCard(
+                usedStorage: "156.8 MB",
+                totalStorage: "2 GB",
+                filesCount: 6,
+                progress: 0.08,
+              ),
+              const SizedBox(height: 16),
+
+              // Material items list
+              Column(
+                children: filteredMaterials.map((item) {
                   return MaterialItemCard(
                     title: item["title"],
                     subject: item["subject"],
@@ -147,10 +146,10 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
                     color: item["color"],
                     icon: item["icon"],
                   );
-                },
+                }).toList(),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

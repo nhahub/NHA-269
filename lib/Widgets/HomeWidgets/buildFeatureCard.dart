@@ -18,7 +18,7 @@ Widget buildFeatureCard({
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
+            color: Colors.black.withAlpha(8), // alpha ~0.03
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -29,7 +29,7 @@ Widget buildFeatureCard({
         children: [
           CircleAvatar(
             radius: 24,
-            backgroundColor: color.withValues(alpha: 0.15),
+            backgroundColor: color.withAlpha(38), // alpha ~0.15
             child: Icon(icon, color: color, size: 26),
           ),
           const SizedBox(height: 10),
@@ -45,6 +45,9 @@ Widget buildFeatureCard({
           Text(
             subtitle,
             textAlign: TextAlign.center,
+            softWrap: true,
+            maxLines: 3, // limit the lines to prevent overflow
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               color: AppColors.grey,
               fontSize: 12,

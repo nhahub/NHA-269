@@ -19,7 +19,7 @@ Widget buildAboutSection() {
       mainAxisSize: MainAxisSize.min,
       children: [
         Image.asset(
-          'assets/icon/app_icon.png',
+          'assets/icons/app_icon.png',
           width: 55,
           height: 55,
           fit: BoxFit.contain,

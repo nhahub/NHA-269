@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theme/app_colors.dart';
 
 class MaterialStorageCard extends StatelessWidget {
   final String usedStorage;
@@ -7,25 +8,25 @@ class MaterialStorageCard extends StatelessWidget {
   final double progress;
 
   const MaterialStorageCard({
-    Key? key,
+    super.key,
     required this.usedStorage,
     required this.totalStorage,
     required this.filesCount,
     required this.progress,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black12,
-            blurRadius: 5,
-            offset: const Offset(0, 2),
+            color: Colors.black.withAlpha(13),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -35,32 +36,39 @@ class MaterialStorageCard extends StatelessWidget {
           Text(
             "Storage Used",
             style: TextStyle(
-              color: Colors.grey[700],
+              color: AppColors.grey,
               fontWeight: FontWeight.bold,
+              fontSize: 16,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 "$usedStorage of $totalStorage",
-                style: const TextStyle(color: Colors.black87),
+                style: const TextStyle(
+                  color: AppColors.deepSapphire,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               Text(
                 "$filesCount files",
-                style: const TextStyle(color: Colors.grey),
+                style: TextStyle(
+                  color: AppColors.grey,
+                  fontSize: 14,
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 12),
           ClipRRect(
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(12),
             child: LinearProgressIndicator(
               value: progress,
-              backgroundColor: Colors.grey[200],
-              color: Colors.green,
-              minHeight: 6,
+              minHeight: 8,
+              backgroundColor: AppColors.lightGrey,
+              valueColor: AlwaysStoppedAnimation(AppColors.mintGreen),
             ),
           ),
         ],

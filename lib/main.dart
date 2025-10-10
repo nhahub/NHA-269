@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:learnflow/screens/FocusScreen.dart';
+import 'package:learnflow/screens/Focus_Screen.dart';
 import 'package:learnflow/screens/Material_Screen.dart';
 import 'package:learnflow/screens/authentication_screen.dart';
 import 'package:learnflow/screens/home_screen.dart';
