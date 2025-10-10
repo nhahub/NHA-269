@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "989948659929",
+    "project_id": "learnflow-ed84e",
+    "storage_bucket": "learnflow-ed84e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:989948659929:android:fcc2df0c88ec89d3ad16c8",
+        "android_client_info": {
+          "package_name": "com.learnflow.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZNRrIPzdK1Bo_ECeVc1ODjUMk5hcx8RU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

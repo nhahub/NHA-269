@@ -10,6 +10,7 @@ import '../Widgets/SettingsWidgets/SupportSection.dart';
 import '../Widgets/SettingsWidgets/UserCard.dart';
 import '../theme/app_colors.dart';
 
+
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
@@ -80,7 +81,7 @@ class SettingsScreen extends StatelessWidget {
               buildAboutSection(),
               const SizedBox(height: 28),
 
-              buildSignOutButton(),
+              buildSignOutButton(context),
               const SizedBox(height: 40),
             ],
           ),

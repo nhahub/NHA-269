@@ -3,12 +3,16 @@ import '../Widgets/HomeWidgets/buildFeatureCard.dart';
 import '../Widgets/HomeWidgets/buildOverviewItem.dart';
 import '../Widgets/HomeWidgets/buildScheduleCard.dart';
 import '../theme/app_colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
@@ -24,17 +28,17 @@ class HomeScreen extends StatelessWidget {
               fit: BoxFit.scaleDown,
               alignment: Alignment.centerLeft,
               child: RichText(
-                text: const TextSpan(
-                  style: TextStyle(
+                text: TextSpan(
+                  style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: AppColors.deepSapphire,
                   ),
                   children: [
-                    TextSpan(text: 'Welcome back, '),
+                    const TextSpan(text: 'Welcome back, '),
                     TextSpan(
-                      text: 'StudentName!',
-                      style: TextStyle(color: AppColors.oceanBlue),
+                      text: '${user?.displayName ?? 'Student'}!',
+                      style: const TextStyle(color: AppColors.oceanBlue),
                     ),
                   ],
                 ),

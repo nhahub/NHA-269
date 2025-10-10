@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:learnflow/Firebase/auth_service.dart';
 import '../../theme/app_colors.dart';
 
-Widget buildSignOutButton() {
+Widget buildSignOutButton(BuildContext context) {
   return GestureDetector(
-    onTap: () {
-      // TODO: Add sign-out logic
+    onTap: () async {
+      try {
+        await AuthService().signOut();
+        if (context.mounted) {
+          Navigator.pushReplacementNamed(context, '/auth');
+        }
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error signing out: $e')),
+          );
+        }
+      }
     },
     child: Container(
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
@@ -19,9 +31,9 @@ Widget buildSignOutButton() {
           ),
         ],
       ),
-      child: Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Icon(
             Icons.logout,
             color: Colors.red,

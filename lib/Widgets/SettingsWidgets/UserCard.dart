@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 Widget buildUserCard() {
+  final user = FirebaseAuth.instance.currentUser;
+
   return Container(
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
@@ -21,7 +25,7 @@ Widget buildUserCard() {
           radius: 28,
           backgroundColor: AppColors.oceanBlue,
           child: const Text(
-            'S',
+            'HI',
             style: TextStyle(
               color: AppColors.white,
               fontSize: 22,
@@ -35,17 +39,17 @@ Widget buildUserCard() {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Student User',
-                style: TextStyle(
+              Text(
+                '${user?.displayName ?? 'Student'} !',
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: AppColors.deepSapphire,
                 ),
               ),
               const SizedBox(height: 2),
-              const Text(
-                'student@example.com',
+               Text(
+                '${user?.email ?? 'Student'} !',
                 style: TextStyle(fontSize: 13, color: AppColors.grey),
               ),
               const SizedBox(height: 6),
