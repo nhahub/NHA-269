@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../theme/app_colors.dart';
 
 Widget buildUserCard() {
@@ -20,10 +19,14 @@ Widget buildUserCard() {
       children: [
         CircleAvatar(
           radius: 28,
-          backgroundColor: Colors.blue.shade800,
+          backgroundColor: AppColors.oceanBlue,
           child: const Text(
             'S',
-            style: TextStyle(color: Colors.white, fontSize: 24),
+            style: TextStyle(
+              color: AppColors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         const SizedBox(width: 16),
@@ -34,10 +37,14 @@ Widget buildUserCard() {
             children: [
               const Text(
                 'Student User',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.deepSapphire,
+                ),
               ),
               const SizedBox(height: 2),
-              Text(
+              const Text(
                 'student@example.com',
                 style: TextStyle(fontSize: 13, color: AppColors.grey),
               ),
@@ -48,7 +55,7 @@ Widget buildUserCard() {
                     width: 8,
                     height: 8,
                     decoration: const BoxDecoration(
-                      color: Colors.green,
+                      color: AppColors.teal,
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -57,16 +64,21 @@ Widget buildUserCard() {
                     'Premium Member',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Colors.green.shade700,
+                      color: AppColors.teal,
                       fontWeight: FontWeight.w500,
                     ),
-                  )
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),
-        const Icon(Icons.chevron_right, color: Colors.grey),
+
+        Icon(
+          Icons.chevron_right,
+          color: AppColors.grey.withValues(alpha: 0.7),
+          size: 22,
+        ),
       ],
     ),
   );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../../theme/app_colors.dart';
+import '../Shared/compact_switch_tile.dart';
 
 Widget buildDataStorageSection() {
   return Container(
@@ -17,23 +17,50 @@ Widget buildDataStorageSection() {
     ),
     child: Column(
       children: [
-        SwitchListTile(
+        CompactSwitchTile(
           value: true,
           onChanged: (val) {},
-          secondary: const Icon(Icons.cloud_outlined),
-          title: const Text('Auto Backup'),
-          subtitle: const Text('Automatically backup your data'),
+          icon: Icons.cloud_outlined,
+          title: 'Auto Backup',
+          subtitle: 'Automatically backup your data',
         ),
         const Divider(height: 0),
-        ListTile(
-          leading: const Icon(Icons.palette_outlined),
-          title: const Text('Theme'),
-          subtitle: const Text('Customize app appearance'),
-          trailing: const Icon(Icons.chevron_right),
-          onTap: () {},
+
+        // Theme tile matching AccountSection style
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.palette_outlined,
+                color: AppColors.deepSapphire,
+                size: 22,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Theme',
+                      style: TextStyle(
+                        color: AppColors.deepSapphire,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      'Customize app appearance',
+                      style: TextStyle(color: AppColors.grey, fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right, color: AppColors.grey),
+            ],
+          ),
         ),
       ],
     ),
   );
 }
-

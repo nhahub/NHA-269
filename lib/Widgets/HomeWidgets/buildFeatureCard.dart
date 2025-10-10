@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../theme/app_colors.dart';
 
 Widget buildFeatureCard({
@@ -13,18 +12,18 @@ Widget buildFeatureCard({
     borderRadius: BorderRadius.circular(16),
     onTap: onTap,
     child: Container(
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
-      padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -38,14 +37,18 @@ Widget buildFeatureCard({
             title,
             style: const TextStyle(
               color: AppColors.deepSapphire,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             subtitle,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.grey, fontSize: 12),
+            style: const TextStyle(
+              color: AppColors.grey,
+              fontSize: 12,
+            ),
           ),
         ],
       ),

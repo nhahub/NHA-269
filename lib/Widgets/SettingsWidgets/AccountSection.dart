@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../theme/app_colors.dart';
 
 Widget buildAccountSection() {
@@ -17,24 +16,72 @@ Widget buildAccountSection() {
     ),
     child: Column(
       children: [
-        ListTile(
-          leading: const Icon(Icons.person_outline),
-          title: const Text('Profile'),
-          subtitle: const Text('Manage your personal information'),
-          trailing: const Icon(Icons.chevron_right),
-          onTap: () {
-            // Navigate to Profile page
-          },
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.person_outline,
+                color: AppColors.deepSapphire,
+                size: 22,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Profile',
+                      style: TextStyle(
+                        color: AppColors.deepSapphire,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      'Manage your personal information',
+                      style: TextStyle(color: AppColors.grey, fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right, color: AppColors.grey),
+            ],
+          ),
         ),
         const Divider(height: 0),
-        ListTile(
-          leading: const Icon(Icons.lock_outline),
-          title: const Text('Privacy & Security'),
-          subtitle: const Text('Control your privacy settings'),
-          trailing: const Icon(Icons.chevron_right),
-          onTap: () {
-            // Navigate to Privacy page
-          },
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            children: [
+              const Icon(
+                Icons.lock_outline,
+                color: AppColors.deepSapphire,
+                size: 22,
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Privacy & Security',
+                      style: TextStyle(
+                        color: AppColors.deepSapphire,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    SizedBox(height: 2),
+                    Text(
+                      'Control your privacy settings',
+                      style: TextStyle(color: AppColors.grey, fontSize: 12),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right, color: AppColors.grey),
+            ],
+          ),
         ),
       ],
     ),

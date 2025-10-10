@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../theme/app_colors.dart';
 
 Widget buildOverviewItem({
@@ -8,34 +7,43 @@ Widget buildOverviewItem({
   required String value,
   required Color color,
 }) {
-  return Row(
-    children: [
-      Container(
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.15),
-          shape: BoxShape.circle,
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 2), // very tight
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.15),
+            shape: BoxShape.circle,
+          ),
+          padding: const EdgeInsets.all(8), // smaller icon circle
+          child: Icon(icon, color: color, size: 18), // smaller icon
         ),
-        padding: const EdgeInsets.all(10),
-        child: Icon(icon, color: color, size: 20),
-      ),
-      const SizedBox(width: 12),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(color: AppColors.grey, fontSize: 13),
-          ),
-          Text(
-            value,
-            style: const TextStyle(
-              color: AppColors.deepSapphire,
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
+        const SizedBox(width: 8), // reduced space
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              style: const TextStyle(
+                color: AppColors.grey,
+                fontSize: 11, // smaller text
+              ),
             ),
-          ),
-        ],
-      ),
-    ],
+            const SizedBox(height: 1), // tiny gap
+            Text(
+              value,
+              style: const TextStyle(
+                color: AppColors.deepSapphire,
+                fontSize: 13, // slightly smaller
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
   );
 }

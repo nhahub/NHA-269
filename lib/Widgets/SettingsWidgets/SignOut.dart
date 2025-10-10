@@ -4,10 +4,10 @@ import '../../theme/app_colors.dart';
 Widget buildSignOutButton() {
   return GestureDetector(
     onTap: () {
-      // Sign out logic
+      // TODO: Add sign-out logic
     },
     child: Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(16),
@@ -22,9 +22,20 @@ Widget buildSignOutButton() {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: const [
-          Icon(Icons.logout, color: Colors.red),
+          Icon(
+            Icons.logout,
+            color: Colors.red,
+            size: 20,
+          ),
           SizedBox(width: 8),
-          Text('Sign Out', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
+          Text(
+            'Sign Out',
+            style: TextStyle(
+              color: Colors.red,
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+            ),
+          ),
         ],
       ),
     ),

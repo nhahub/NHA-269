@@ -4,8 +4,8 @@ import '../Widgets/HomeWidgets/buildOverviewItem.dart';
 import '../Widgets/HomeWidgets/buildScheduleCard.dart';
 import '../theme/app_colors.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,24 +17,40 @@ class HomePage extends StatelessWidget {
         toolbarHeight: 50,
         automaticallyImplyLeading: false,
 
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
-              'Good Afternoon, Student!',
-              style: TextStyle(
-                color: AppColors.deepSapphire,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+        title: Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: RichText(
+                  text: TextSpan(
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.deepSapphire,
+                    ),
+                    children: [
+                      const TextSpan(text: 'Welcome back, '),
+                      TextSpan(
+                        text: 'StudentName!',
+                        style: const TextStyle(color: AppColors.oceanBlue),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-            SizedBox(height: 4),
-            Text(
-              'Ready to learn something new?',
-              style: TextStyle(color: AppColors.grey, fontSize: 13),
-            ),
-          ],
+              const SizedBox(height: 4),
+              const Text(
+                'Ready to learn something new?',
+                style: TextStyle(color: AppColors.grey, fontSize: 13),
+              ),
+            ],
+          ),
         ),
+
         actions: [
           IconButton(
             onPressed: () {},
@@ -58,7 +74,7 @@ class HomePage extends StatelessWidget {
 
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(7),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -111,7 +127,7 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 28),
 
               const Text(
                 'Main Features',
@@ -135,7 +151,7 @@ class HomePage extends StatelessWidget {
                     subtitle: 'Manage your schedule',
                     color: AppColors.oceanBlue,
                     onTap: () {
-                      Navigator.pushNamed(context,'/timetable');
+                      Navigator.pushNamed(context, '/timetable');
                     },
                   ),
                   buildFeatureCard(
@@ -151,7 +167,7 @@ class HomePage extends StatelessWidget {
                     subtitle: 'Track assignments',
                     color: AppColors.mintGreen,
                     onTap: () {
-                      Navigator.pushNamed(context,'/tasks');
+                      Navigator.pushNamed(context, '/tasks');
                     },
                   ),
                   buildFeatureCard(
@@ -163,7 +179,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 28),
 
               Container(
                 width: double.infinity,
@@ -195,7 +211,7 @@ class HomePage extends StatelessWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.pushNamed(context,'/timetable');
+                            Navigator.pushNamed(context, '/timetable');
                           },
                           child: const Text(
                             'View All',

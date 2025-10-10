@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../theme/app_colors.dart';
 
 class TaskCard extends StatelessWidget {
@@ -34,10 +33,11 @@ class TaskCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black..withValues(alpha: 0.05),
-            blurRadius: 5,
-            offset: const Offset(0, 2),
-          )
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 6,
+            spreadRadius: 1,
+            offset: const Offset(0, 3),
+          ),
         ],
       ),
       child: Row(
@@ -47,7 +47,8 @@ class TaskCard extends StatelessWidget {
             value: done,
             onChanged: (_) {},
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6)),
+              borderRadius: BorderRadius.circular(6),
+            ),
             activeColor: AppColors.oceanBlue,
           ),
           const SizedBox(width: 8),
@@ -62,14 +63,16 @@ class TaskCard extends StatelessWidget {
                     style: TextStyle(
                       decoration: done ? TextDecoration.lineThrough : null,
                       color: AppColors.deepSapphire,
-
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   if (subtitle.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.only(top: 4),
-                      child: Text(subtitle,
-                          style: const TextStyle(color: AppColors.grey)),
+                      child: Text(
+                        subtitle,
+                        style: const TextStyle(color: AppColors.grey),
+                      ),
                     ),
                   const SizedBox(height: 6),
                   Row(
@@ -79,13 +82,15 @@ class TaskCard extends StatelessWidget {
                       if (dueText != null)
                         Row(
                           children: [
-                            const Icon(Icons.access_time, size: 13, color: AppColors.grey),
+                            const Icon(Icons.access_time,
+                                size: 13, color: AppColors.grey),
                             const SizedBox(width: 4),
                             Text(
                               dueText!,
-                              style: TextStyle(
-                                  color:AppColors.grey,
-                                  fontSize: 13),
+                              style: const TextStyle(
+                                color: AppColors.grey,
+                                fontSize: 13,
+                              ),
                             ),
                           ],
                         ),
@@ -121,7 +126,6 @@ class TaskCard extends StatelessWidget {
               ],
             ),
           ),
-
         ],
       ),
     );
@@ -131,13 +135,13 @@ class TaskCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: AppColors.teal, // always teal background
+        color: AppColors.teal,
         borderRadius: BorderRadius.circular(15),
       ),
       child: Text(
         label,
-        style: TextStyle(
-          color: AppColors.white, // text color can still vary
+        style: const TextStyle(
+          color: AppColors.white,
           fontSize: 12,
         ),
       ),

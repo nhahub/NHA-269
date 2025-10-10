@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../theme/app_colors.dart';
 
 class TimetableScreen extends StatefulWidget {
   const TimetableScreen({super.key});
@@ -55,89 +55,87 @@ class _TimetableScreenState extends State<TimetableScreen> {
     List<Map<String, String>> todaySchedule = _scheduleData[selectedDay] ?? [];
 
     return Scaffold(
+      backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
-        title: const Text('Timetable'),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.lightGrey,
         elevation: 0,
-        centerTitle: false,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+        toolbarHeight: 60,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Timetable',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: AppColors.deepSapphire,
+              ),
+            ),
+            const SizedBox(height: 4),
+            const Text(
+              'Manage your weekly schedule',
+              style: TextStyle(
+                color: AppColors.grey,
+                fontSize: 13,
+              ),
+            ),
+          ],
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.calendar_month_outlined),
+            icon: const Icon(Icons.calendar_month_outlined,
+                color: AppColors.deepSapphire),
             onPressed: () {},
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildSubtitle(),
-            const SizedBox(height: 12),
-            _buildDaysRow(),
-            const SizedBox(height: 20),
-            Text(
-              '${_days[_selectedDayIndex]} Schedule',
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Expanded(
-              child: todaySchedule.isEmpty
-                  ? const Center(
-                child: Text(
-                  'No classes scheduled for this day',
-                  style: TextStyle(color: Colors.grey),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildDaysRow(),
+              const SizedBox(height: 20),
+              Text(
+                '${_days[_selectedDayIndex]} Schedule',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: AppColors.deepSapphire,
                 ),
-              )
-                  : ListView.builder(
-                itemCount: todaySchedule.length,
-                itemBuilder: (context, index) {
-                  final item = todaySchedule[index];
-                  return _buildScheduleCard(
-                    subject: item['subject']!,
-                    time: item['time']!,
-                    location: item['location']!,
-                    color: Color(int.parse(item['color']!)),
-                  );
-                },
               ),
-            ),
-            const SizedBox(height: 12),
-            _buildWeeklyOverview(),
-          ],
+              const SizedBox(height: 12),
+              Expanded(
+                child: todaySchedule.isEmpty
+                    ? const Center(
+                        child: Text(
+                          'No classes scheduled for this day',
+                          style: TextStyle(color: AppColors.grey),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: todaySchedule.length,
+                        itemBuilder: (context, index) {
+                          final item = todaySchedule[index];
+                          return _buildScheduleCard(
+                            subject: item['subject']!,
+                            time: item['time']!,
+                            location: item['location']!,
+                            color: Color(int.parse(item['color']!)),
+                          );
+                        },
+                      ),
+              ),
+              const SizedBox(height: 16),
+              _buildWeeklyOverview(),
+              const SizedBox(height: 8),
+            ],
+          ),
         ),
       ),
     );
   }
-
-
-
-
-
-  Widget _buildSubtitle() {
-    return const Text(
-      'Manage your weekly schedule',
-      style: TextStyle(
-        color: Colors.grey,
-        fontSize: 13,
-      ),
-    );
-  }
-
-
-
-
-
-
 
   Widget _buildDaysRow() {
     return Row(
@@ -146,16 +144,21 @@ class _TimetableScreenState extends State<TimetableScreen> {
         bool isSelected = index == _selectedDayIndex;
         return GestureDetector(
           onTap: () {
-            setState(() {
-              _selectedDayIndex = index;
-            });
+            setState(() => _selectedDayIndex = index);
           },
           child: Container(
-            width: 40,
+            width: 44,
             padding: const EdgeInsets.symmetric(vertical: 8),
             decoration: BoxDecoration(
-              color: isSelected ? Colors.blue : Colors.grey.shade200,
-              borderRadius: BorderRadius.circular(8),
+              color: isSelected ? AppColors.oceanBlue : AppColors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
             ),
             child: Column(
               children: [
@@ -164,14 +167,14 @@ class _TimetableScreenState extends State<TimetableScreen> {
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
-                    color: isSelected ? Colors.white : Colors.black87,
+                    color: isSelected ? Colors.white : AppColors.deepSapphire,
                   ),
                 ),
                 Text(
                   '${index + 1}',
                   style: TextStyle(
                     fontSize: 12,
-                    color: isSelected ? Colors.white : Colors.black54,
+                    color: isSelected ? Colors.white70 : AppColors.grey,
                   ),
                 ),
               ],
@@ -182,10 +185,6 @@ class _TimetableScreenState extends State<TimetableScreen> {
     );
   }
 
-
-
-
-
   Widget _buildScheduleCard({
     required String subject,
     required String time,
@@ -194,16 +193,16 @@ class _TimetableScreenState extends State<TimetableScreen> {
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(0.08),
             blurRadius: 6,
             offset: const Offset(0, 3),
-          )
+          ),
         ],
       ),
       child: Row(
@@ -226,24 +225,27 @@ class _TimetableScreenState extends State<TimetableScreen> {
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
+                    color: AppColors.deepSapphire,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    const Icon(Icons.access_time, size: 14, color: Colors.grey),
+                    const Icon(Icons.access_time,
+                        size: 14, color: AppColors.grey),
                     const SizedBox(width: 4),
                     Text(
                       time,
-                      style: const TextStyle(fontSize: 13, color: Colors.grey),
+                      style: const TextStyle(fontSize: 13, color: AppColors.grey),
                     ),
                     const SizedBox(width: 12),
                     const Icon(Icons.location_on_outlined,
-                        size: 14, color: Colors.grey),
+                        size: 14, color: AppColors.grey),
                     const SizedBox(width: 4),
                     Text(
                       location,
-                      style: const TextStyle(fontSize: 13, color: Colors.grey),
+                      style:
+                          const TextStyle(fontSize: 13, color: AppColors.grey),
                     ),
                   ],
                 ),
@@ -252,25 +254,25 @@ class _TimetableScreenState extends State<TimetableScreen> {
           ),
           TextButton(
             onPressed: () {},
+            style: TextButton.styleFrom(
+              foregroundColor: AppColors.oceanBlue,
+            ),
             child: const Text('Edit'),
-          )
+          ),
         ],
       ),
     );
   }
 
-
-
-
   Widget _buildWeeklyOverview() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.white,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withOpacity(0.08),
             blurRadius: 6,
             offset: const Offset(0, 3),
           ),
@@ -279,16 +281,12 @@ class _TimetableScreenState extends State<TimetableScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildOverviewItem('18', 'Total Hours', Colors.blue.shade50),
-          _buildOverviewItem('12', 'Classes', Colors.green.shade50),
+          _buildOverviewItem('18', 'Total Hours', AppColors.teal.withOpacity(0.1)),
+          _buildOverviewItem('12', 'Classes', AppColors.oceanBlue.withOpacity(0.1)),
         ],
       ),
     );
   }
-
-
-
-
 
   Widget _buildOverviewItem(String number, String label, Color bgColor) {
     return Container(
@@ -305,12 +303,13 @@ class _TimetableScreenState extends State<TimetableScreen> {
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
+              color: AppColors.deepSapphire,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             label,
-            style: const TextStyle(color: Colors.grey),
+            style: const TextStyle(color: AppColors.grey),
           ),
         ],
       ),

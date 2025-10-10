@@ -26,48 +26,62 @@ class SettingsScreen extends StatelessWidget {
           children: [
             const Text(
               'Settings',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: AppColors.deepSapphire,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
               'Customize your experience',
-              style: TextStyle(color: AppColors.grey, fontSize: 13),
+              style: TextStyle(
+                color: AppColors.grey,
+                fontSize: 13,
+              ),
             ),
           ],
         ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               buildUserCard(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 28),
+
               buildSectionTitle('Account'),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               buildAccountSection(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 28),
+
               buildSectionTitle('Preferences'),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               buildPreferencesSection(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 28),
+
               buildSectionTitle('Data & Storage'),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               buildDataStorageSection(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 28),
+
               buildSectionTitle('Support'),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               buildSupportSection(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 28),
+
               buildSectionTitle('Storage Usage'),
-              const SizedBox(height: 8),
+              const SizedBox(height: 12),
               buildStorageUsageSection(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 28),
+
               buildAboutSection(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 28),
+
               buildSignOutButton(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
             ],
           ),
         ),

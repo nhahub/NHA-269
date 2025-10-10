@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:learnflow/screens/authentication_screen.dart';
-import 'package:learnflow/screens/home_page.dart';
+import 'package:learnflow/screens/home_screen.dart';
 import 'package:learnflow/screens/settings_screen.dart';
 import 'package:learnflow/screens/timeTable_screen.dart';
 import 'package:learnflow/screens/tasks_screen.dart';
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: const AuthenticationScreen(),
       routes: {
-        '/home': (context) => const HomePage(),
+        '/home': (context) => const HomeScreen(),
         '/settings': (context) => const SettingsScreen(),
         '/timetable': (context) => TimetableScreen(),
         '/tasks': (context) => const TasksScreen(),

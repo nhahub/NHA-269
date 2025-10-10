@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
 
@@ -20,33 +19,50 @@ Widget buildStorageUsageSection() {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Used Storage',
-          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          'Storage Usage',
+          style: TextStyle(
+            color: AppColors.deepSapphire,
+            fontWeight: FontWeight.w600,
+            fontSize: 14,
+          ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 10),
+
+        // Progress bar and text
         Row(
           children: [
             Expanded(
-              child: LinearProgressIndicator(
-                value: 156.8 / 2048, // تقريباً 2GB
-                backgroundColor: Colors.grey.shade300,
-                color: Colors.green,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: LinearProgressIndicator(
+                  value: 156.8 / 2048,
+                  backgroundColor: Colors.grey.withValues(alpha: 0.2),
+                  color: Colors.green.shade600,
+                  minHeight: 8,
+                ),
               ),
             ),
             const SizedBox(width: 10),
             const Text(
               '156.8 MB of 2 GB',
-              style: TextStyle(fontSize: 12),
+              style: TextStyle(
+                fontSize: 12,
+                color: AppColors.grey,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ],
         ),
-        const SizedBox(height: 10),
+
+        const SizedBox(height: 12),
+
+        // Breakdown text
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: const [
-            Text('45.2 MB\nDocuments', textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
-            Text('89.1 MB\nMedia', textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
-            Text('22.5 MB\nCache', textAlign: TextAlign.center, style: TextStyle(fontSize: 12)),
+            _StorageStat(label: 'Documents', value: '45.2 MB'),
+            _StorageStat(label: 'Media', value: '89.1 MB'),
+            _StorageStat(label: 'Cache', value: '22.5 MB'),
           ],
         ),
       ],
@@ -54,3 +70,36 @@ Widget buildStorageUsageSection() {
   );
 }
 
+class _StorageStat extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const _StorageStat({
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: const TextStyle(
+            color: AppColors.deepSapphire,
+            fontWeight: FontWeight.w600,
+            fontSize: 12,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          label,
+          style: const TextStyle(
+            color: AppColors.grey,
+            fontSize: 11,
+          ),
+        ),
+      ],
+    );
+  }
+}

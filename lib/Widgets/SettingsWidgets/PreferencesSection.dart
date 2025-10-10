@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
-
+import '../Shared/compact_switch_tile.dart';
 
 Widget buildPreferencesSection() {
   return Container(
@@ -17,43 +17,30 @@ Widget buildPreferencesSection() {
     ),
     child: Column(
       children: [
-        SwitchListTile(
+        CompactSwitchTile(
           value: false,
-          onChanged: (val) {
-            // Dark mode toggle
-          },
-          secondary: const Icon(Icons.brightness_6_outlined),
-          title: const Text('Dark Mode'),
-          subtitle: const Text('Switch between light and dark theme'),
+          onChanged: (val) {}, 
+          icon: Icons.brightness_6_outlined,
+          title: 'Dark Mode',
+          subtitle: 'Switch between light and dark theme',
         ),
-
         const Divider(height: 0),
-
-        SwitchListTile(
+        CompactSwitchTile(
           value: true,
-          onChanged: (val) {
-            // Notifications toggle
-          },
-          secondary: const Icon(Icons.notifications_outlined),
-          title: const Text('Notifications'),
-          subtitle: const Text('Enable push notifications'),
+          onChanged: (val) {}, 
+          icon: Icons.notifications_outlined,
+          title: 'Notifications',
+          subtitle: 'Enable push notifications',
         ),
-
         const Divider(height: 0),
-
-        SwitchListTile(
+        CompactSwitchTile(
           value: true,
-          onChanged: (val) {
-            // Sound effects toggle
-          },
-          secondary: const Icon(Icons.volume_up_outlined),
-          title: const Text('Sound Effects'),
-          subtitle: const Text('Play sounds for interactions'),
+          onChanged: (val) {}, 
+          icon: Icons.volume_up_outlined,
+          title: 'Sound Effects',
+          subtitle: 'Play sounds for interactions',
         ),
-
       ],
     ),
   );
 }
-
-
