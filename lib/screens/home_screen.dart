@@ -16,62 +16,55 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: AppColors.lightGrey,
         toolbarHeight: 50,
         automaticallyImplyLeading: false,
-
-        title: Flexible(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: RichText(
-                  text: TextSpan(
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.deepSapphire,
-                    ),
-                    children: [
-                      const TextSpan(text: 'Welcome back, '),
-                      TextSpan(
-                        text: 'StudentName!',
-                        style: const TextStyle(color: AppColors.oceanBlue),
-                      ),
-                    ],
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: RichText(
+                text: const TextSpan(
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.deepSapphire,
                   ),
+                  children: [
+                    TextSpan(text: 'Welcome back, '),
+                    TextSpan(
+                      text: 'StudentName!',
+                      style: TextStyle(color: AppColors.oceanBlue),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 4),
-              const Text(
-                'Ready to learn something new?',
-                style: TextStyle(color: AppColors.grey, fontSize: 13),
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 4),
+            const Text(
+              'Ready to learn something new?',
+              style: TextStyle(color: AppColors.grey, fontSize: 13),
+            ),
+          ],
         ),
-
-        actions: [
+        actions: const [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications_none),
+            onPressed: null,
+            icon: Icon(Icons.notifications_none),
             color: AppColors.deepSapphire,
           ),
           IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/settings');
-            },
-            icon: const Icon(Icons.person),
+            onPressed: null,
+            icon: Icon(Icons.person),
             color: AppColors.deepSapphire,
           ),
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.more_vert),
+            onPressed: null,
+            icon: Icon(Icons.more_vert),
             color: AppColors.deepSapphire,
           ),
         ],
       ),
-
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -128,7 +121,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 28),
-
               const Text(
                 'Main Features',
                 style: TextStyle(
@@ -180,7 +172,6 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 28),
-
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
