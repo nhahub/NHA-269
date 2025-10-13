@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:learnflow/Firebase//auth_service.dart';
+import 'package:learnflow/Firebase/auth_service.dart';
 import '../../Widgets/Shared/custom_button.dart';
 import '../../Widgets/Shared/text_field.dart';
 import '../../theme/app_colors.dart';
@@ -14,13 +14,26 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
+  final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _loading = false;
+  String? _emailError;
+  String? _passwordError;
+
+  final RegExp _emailRegex =
+      RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
 
   Future<void> _register() async {
-    setState(() => _loading = true);
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() {
+      _loading = true;
+      _emailError = null;
+      _passwordError = null;
+    });
+
     try {
       await AuthService().signUp(
         email: _emailController.text.trim(),
@@ -30,9 +43,17 @@ class _SignUpFormState extends State<SignUpForm> {
       if (!mounted) return;
       Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      final errorMessage = e.toString();
+      setState(() {
+        if (errorMessage.contains('already registered') ||
+            errorMessage.contains('already in use')) {
+          _emailError = 'This email is already registered.';
+        } else if (errorMessage.contains('weak-password')) {
+          _passwordError = 'Password is too weak.';
+        } else {
+          _emailError = 'Check your email or password and try again.';
+        }
+      });
     } finally {
       setState(() => _loading = false);
     }
@@ -40,59 +61,108 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      key: const ValueKey('signUpForm'),
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        const Text(
-          'Get Started',
-          style: TextStyle(
-            color: AppColors.deepSapphire,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+    return Form(
+      key: _formKey,
+      child: Column(
+        key: const ValueKey('signUpForm'),
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text(
+            'Get Started',
+            style: TextStyle(
+              color: AppColors.deepSapphire,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 4),
-        const Text(
-          'Create your account to begin',
-          style: TextStyle(color: AppColors.grey, fontSize: 14),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 20),
-
-        buildTextField('Full Name', Icons.person, controller: _nameController),
-        const SizedBox(height: 16),
-        buildTextField('Email Address', Icons.email, controller: _emailController),
-        const SizedBox(height: 16),
-        buildTextField('Password', Icons.lock, obscure: true, controller: _passwordController),
-        const SizedBox(height: 24),
-
-        CustomButton(
-          text: _loading ? 'Creating...' : 'Create Account',
-          onPressed: _register,
-        ),
-        const SizedBox(height: 12),
-
-        Center(
-          child: Text.rich(
-            TextSpan(
-              text: 'Already have an account? ',
-              style: const TextStyle(color: AppColors.grey, fontSize: 14),
-              children: [
-                TextSpan(
-                  text: 'Sign in',
-                  style: const TextStyle(
-                    color: AppColors.oceanBlue,
-                    fontWeight: FontWeight.bold,
+          const SizedBox(height: 4),
+          const Text(
+            'Create your account to begin',
+            style: TextStyle(color: AppColors.grey, fontSize: 14),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 20),
+          buildTextField(
+            'Full Name',
+            Icons.person,
+            controller: _nameController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Full name is required';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 16),
+          buildTextField(
+            'Email Address',
+            Icons.email,
+            controller: _emailController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Email is required';
+              }
+              if (!_emailRegex.hasMatch(value.trim())) {
+                return 'Enter a valid email address';
+              }
+              return null;
+            },
+            errorText: _emailError,
+          ),
+          const SizedBox(height: 16),
+          buildTextField(
+            'Password',
+            Icons.lock,
+            obscure: true,
+            controller: _passwordController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Password is required';
+              }
+              List<String> errors = [];
+              if (value.length < 6) {
+                errors.add('• At least 6 characters');
+              }
+              if (!RegExp(r'[0-9]').hasMatch(value)) {
+                errors.add('• At least one number');
+              }
+              if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
+                errors.add('• At least one special character');
+              }
+              if (errors.isNotEmpty) {
+                return 'Password must include:\n${errors.join('\n')}';
+              }
+              return null;
+            },
+            errorText: _passwordError,
+          ),
+          const SizedBox(height: 24),
+          CustomButton(
+            text: _loading ? 'Creating...' : 'Create Account',
+            onPressed: _loading ? null : _register,
+          ),
+          const SizedBox(height: 12),
+          Center(
+            child: Text.rich(
+              TextSpan(
+                text: 'Already have an account? ',
+                style: const TextStyle(color: AppColors.grey, fontSize: 14),
+                children: [
+                  TextSpan(
+                    text: 'Sign in',
+                    style: const TextStyle(
+                      color: AppColors.oceanBlue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    recognizer: TapGestureRecognizer()..onTap = widget.onToggle,
                   ),
-                  recognizer: TapGestureRecognizer()..onTap = widget.onToggle,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

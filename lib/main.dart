@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:learnflow/Firebase/auth_wrapper.dart';
 import 'firebase_options.dart';
 import 'package:learnflow/screens/Focus_Screen.dart';
 import 'package:learnflow/screens/Material_Screen.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const AuthenticationScreen(),
+      home: const AuthWrapper(),
       routes: {
         '/home': (context) => const HomeScreen(),
         '/auth': (context) => const AuthenticationScreen(),

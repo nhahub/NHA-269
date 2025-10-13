@@ -49,7 +49,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                   ],
                 ),
                 child: Image.asset(
-                  'assets/icon/app_icon.png',
+                  'assets/icons/app_icon.png',
                   width: 90,
                   height: 90,
                   fit: BoxFit.contain,

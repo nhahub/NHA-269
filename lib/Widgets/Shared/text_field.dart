@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
 
 Widget buildTextField(
-    String hint,
-    IconData icon, {
-      bool obscure = false,
-      required TextEditingController controller,
-    }) {
+  String hint,
+  IconData icon, {
+  bool obscure = false,
+  required TextEditingController controller,
+  required String? Function(String?)? validator,
+  String? errorText,
+}) {
   return Container(
     decoration: BoxDecoration(
       color: AppColors.lightGrey.withValues(alpha: 0.8),
@@ -19,17 +21,19 @@ Widget buildTextField(
         ),
       ],
     ),
-    child: TextField(
-      controller: controller, // ✅ عشان نمسك النص
+    child: TextFormField(
+      controller: controller,
       obscureText: obscure,
       cursorColor: AppColors.oceanBlue,
+      validator: validator,
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: AppColors.deepSapphire, size: 20),
         hintText: hint,
         hintStyle: const TextStyle(color: AppColors.grey, fontSize: 14),
         filled: true,
         fillColor: Colors.transparent,
-        contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
           borderSide: BorderSide.none,
@@ -45,6 +49,15 @@ Widget buildTextField(
             width: 1.5,
           ),
         ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.red, width: 1.2),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.red, width: 1.5),
+        ),
+        errorText: errorText, 
       ),
     ),
   );
