@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:learnflow/Firebase/auth_service.dart';
 import 'package:learnflow/screens/authentication_screen.dart';
@@ -19,7 +20,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
     final authService = AuthService();
 
     return StreamBuilder(
-      stream: authService.authStateChanges,
+      stream: FirebaseAuth.instance.idTokenChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(

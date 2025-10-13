@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:learnflow/Firebase/auth_service.dart';
+import 'package:learnflow/Widgets/AuthenticationWidgets/password_reset_dialog.dart';
 import '../../Widgets/Shared/custom_button.dart';
 import '../../Widgets/Shared/text_field.dart';
 import '../../theme/app_colors.dart';
@@ -34,9 +35,7 @@ class _SignInFormState extends State<SignInForm> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-
     } catch (e) {
-      
       setState(() {
         _errorText = 'Check either email or password is incorrect';
       });
@@ -97,7 +96,7 @@ class _SignInFormState extends State<SignInForm> {
               }
               return null;
             },
-            errorText: _errorText, 
+            errorText: _errorText,
           ),
           const SizedBox(height: 8),
 
@@ -105,7 +104,11 @@ class _SignInFormState extends State<SignInForm> {
             alignment: Alignment.centerRight,
             child: GestureDetector(
               onTap: () {
-                // TODO: Add reset password navigation
+                showDialog(
+                  context: context,
+                  builder: (context) =>
+                      PasswordResetDialog(authService: AuthService()),
+                );
               },
               child: const Text(
                 'Forgot Password?',
