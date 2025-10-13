@@ -41,10 +41,17 @@ class AuthService {
         email: email,
         password: password,
       );
+
       if (displayName != null) {
         await result.user!.updateDisplayName(displayName);
       }
+      
+      
+      
+      await _auth.currentUser?.reload();
+      await result.user!.sendEmailVerification();
       await result.user!.reload();
+
       return _auth.currentUser;
     } on FirebaseAuthException catch (e) {
       throw Exception(_handleAuthError(e));

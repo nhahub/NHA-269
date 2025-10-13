@@ -35,8 +35,6 @@ class _SignInFormState extends State<SignInForm> {
         password: _passwordController.text.trim(),
       );
 
-      if (!mounted) return;
-      Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
       
       setState(() {

@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:learnflow/Firebase/auth_service.dart';
-import 'package:learnflow/screens/authentication_screen.dart'; 
+import 'package:learnflow/screens/authentication_screen.dart';
 import 'package:learnflow/screens/home_screen.dart';
+import 'package:learnflow/Widgets/AuthenticationWidgets/email_verification_dialog.dart';
 
-class AuthWrapper extends StatelessWidget {
+class AuthWrapper extends StatefulWidget {
   const AuthWrapper({super.key});
+
+  @override
+  State<AuthWrapper> createState() => _AuthWrapperState();
+}
+
+class _AuthWrapperState extends State<AuthWrapper> {
+  bool _dialogShown = false;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +27,19 @@ class AuthWrapper extends StatelessWidget {
           );
         }
 
-        if (snapshot.hasData && snapshot.data != null) {
+        final user = snapshot.data;
+
+        if (user != null) {
+          if (!user.emailVerified && !_dialogShown) {
+            _dialogShown = true;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (_) => EmailVerificationDialog(authService: authService),
+              );
+            });
+          }
           return const HomeScreen();
         }
 

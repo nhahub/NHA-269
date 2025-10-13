@@ -40,8 +40,6 @@ class _SignUpFormState extends State<SignUpForm> {
         password: _passwordController.text.trim(),
         displayName: _nameController.text.trim(),
       );
-      if (!mounted) return;
-      Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
       final errorMessage = e.toString();
       setState(() {
