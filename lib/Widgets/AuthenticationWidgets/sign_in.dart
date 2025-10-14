@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:learnflow/Firebase/auth_service.dart';
+import 'package:learnflow/Firebase/auth_wrapper.dart';
 import 'package:learnflow/Widgets/AuthenticationWidgets/password_reset_dialog.dart';
 import '../../Widgets/Shared/custom_button.dart';
 import '../../Widgets/Shared/text_field.dart';
@@ -35,6 +36,12 @@ class _SignInFormState extends State<SignInForm> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
+      
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const AuthWrapper()),
+        );
+      }
     } catch (e) {
       setState(() {
         _errorText = 'Check either email or password is incorrect';

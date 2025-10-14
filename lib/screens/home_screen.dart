@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     const TextSpan(text: 'Welcome back, '),
                     TextSpan(
-                      text: '${user?.displayName ?? 'Student'}!',
+                      text: '${(user?.displayName?.split(' ').first ?? 'Student')}!',
                       style: const TextStyle(color: AppColors.oceanBlue),
                     ),
                   ],

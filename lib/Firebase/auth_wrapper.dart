@@ -13,7 +13,6 @@ class AuthWrapper extends StatefulWidget {
 }
 
 class _AuthWrapperState extends State<AuthWrapper> {
-  bool _dialogShown = false;
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +30,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
         final user = snapshot.data;
 
         if (user != null) {
-          if (!user.emailVerified && !_dialogShown) {
-            _dialogShown = true;
+          if (!user.emailVerified) {
+            
             WidgetsBinding.instance.addPostFrameCallback((_) {
               showDialog(
                 context: context,

@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:learnflow/Firebase/auth_service.dart';
+import 'package:learnflow/Firebase/auth_wrapper.dart';
 import '../../Widgets/Shared/custom_button.dart';
 import '../../Widgets/Shared/text_field.dart';
 import '../../theme/app_colors.dart';
@@ -22,8 +23,16 @@ class _SignUpFormState extends State<SignUpForm> {
   String? _emailError;
   String? _passwordError;
 
-  final RegExp _emailRegex =
-      RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+  final RegExp _emailRegex = RegExp(
+    r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$',
+  );
+  String _capitalizeFullName(String name) {
+    return name
+        .split(' ')
+        .where((part) => part.isNotEmpty)
+        .map((part) => part[0].toUpperCase() + part.substring(1).toLowerCase())
+        .join(' ');
+  }
 
   Future<void> _register() async {
     if (!_formKey.currentState!.validate()) return;
@@ -38,8 +47,14 @@ class _SignUpFormState extends State<SignUpForm> {
       await AuthService().signUp(
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
-        displayName: _nameController.text.trim(),
+        displayName: _capitalizeFullName(_nameController.text.trim()),
       );
+
+      if (mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) => const AuthWrapper()),
+        );
+      }
     } catch (e) {
       final errorMessage = e.toString();
       setState(() {
