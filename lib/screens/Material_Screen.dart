@@ -4,7 +4,8 @@ import '../Widgets/MaterialWidgets/material_item_card.dart';
 import '../Widgets/MaterialWidgets/material_search_bar.dart';
 import '../Widgets/MaterialWidgets/material_storage_card.dart';
 import '../theme/app_colors.dart';
-import 'package:learnflow/Widgets/MaterialWidgets/file_upload_dialog.dart'; // <-- Import the upload dialog
+import 'package:learnflow/Widgets/MaterialWidgets/file_upload_dialog.dart';
+import 'package:learnflow/Firebase/material_service.dart';
 
 class MaterialsScreen extends StatefulWidget {
   const MaterialsScreen({super.key});
@@ -15,79 +16,33 @@ class MaterialsScreen extends StatefulWidget {
 
 class _MaterialsScreenState extends State<MaterialsScreen> {
   String selectedFilter = "All";
+  final MaterialService _materialService = MaterialService();
 
-  final List<Map<String, dynamic>> materials = [
-    {
-      "title": "Calculus Notes - Chapter 5",
-      "type": "Notes",
-      "subject": "Mathematics",
-      "size": "2.4 MB",
-      "time": "2 days ago",
-      "color": AppColors.teal,
-      "icon": Icons.note,
-    },
-    {
-      "title": "Physics Lab Recording",
-      "type": "Videos",
-      "subject": "Physics",
-      "size": "45.2 MB",
-      "time": "1 week ago",
-      "color": AppColors.oceanBlue,
-      "icon": Icons.videocam,
-    },
-    {
-      "title": "Chemistry Formulas",
-      "type": "PDFs",
-      "subject": "Chemistry",
-      "size": "892 KB",
-      "time": "3 days ago",
-      "color": AppColors.mintGreen,
-      "icon": Icons.picture_as_pdf,
-    },
-    {
-      "title": "History Timeline",
-      "type": "Notes",
-      "subject": "History",
-      "size": "1.8 MB",
-      "time": "5 days ago",
-      "color": AppColors.teal,
-      "icon": Icons.note,
-    },
-    {
-      "title": "Biology Diagrams",
-      "type": "Images",
-      "subject": "Biology",
-      "size": "3.2 MB",
-      "time": "1 week ago",
-      "color": AppColors.mintGreen,
-      "icon": Icons.image,
-    },
-    {
-      "title": "English Literature Notes",
-      "type": "Notes",
-      "subject": "English",
-      "size": "4.1 MB",
-      "time": "1 week ago",
-      "color": AppColors.teal,
-      "icon": Icons.note,
-    },
-  ];
+  late Future<List<Map<String, dynamic>>> _materialsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _materialsFuture = _materialService.getUserMaterials();
+  }
+
+  void _refreshMaterials() {
+    setState(() {
+      _materialsFuture = _materialService.getUserMaterials();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final filteredMaterials = selectedFilter == "All"
-        ? materials
-        : materials.where((m) => m["type"] == selectedFilter).toList();
-
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: AppColors.lightGrey,
         titleSpacing: 0,
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
               "Materials",
               style: TextStyle(
@@ -99,16 +54,12 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
             SizedBox(height: 2),
             Text(
               "Access your study resources",
-              style: TextStyle(
-                color: AppColors.grey,
-                fontSize: 14,
-              ),
+              style: TextStyle(color: AppColors.grey, fontSize: 14),
             ),
           ],
         ),
       ),
 
-      // 📦 Main body
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
@@ -133,34 +84,112 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
               ),
               const SizedBox(height: 16),
 
-              Column(
-                children: filteredMaterials.map((item) {
-                  return MaterialItemCard(
-                    title: item["title"],
-                    subject: item["subject"],
-                    size: item["size"],
-                    time: item["time"],
-                    color: item["color"],
-                    icon: item["icon"],
+              // 🔥 Real-time materials from Firestore
+              FutureBuilder<List<Map<String, dynamic>>>(
+                future: _materialsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return Text(
+                      "Error: ${snapshot.error}",
+                      style: const TextStyle(color: Colors.red),
+                    );
+                  }
+                  final materials = snapshot.data ?? [];
+
+                  // Filter by type
+                  final filteredMaterials = selectedFilter == "All"
+                      ? materials
+                      : materials
+                            .where(
+                              (m) =>
+                                  m["type"]?.toString().toLowerCase() ==
+                                  _normalizeFilter(selectedFilter),
+                            )
+                            .toList();
+
+                  if (filteredMaterials.isEmpty) {
+                    return const Padding(
+                      padding: EdgeInsets.only(top: 40),
+                      child: Text(
+                        "No materials uploaded yet.",
+                        style: TextStyle(color: AppColors.grey, fontSize: 16),
+                      ),
+                    );
+                  }
+
+                  return Column(
+                    children: filteredMaterials.map((item) {
+                      return MaterialItemCard(
+                        title: item["name"] ?? "Untitled",
+                        subject: item["subject"] ?? "Unknown Subject",
+                        size: _formatFileSize(item["size"]),
+                        time: item["uploadedAt"] != null
+                            ? _formatTimeDifference(item["uploadedAt"])
+                            : "Unknown",
+                        type: item["type"] ?? "Untitled",
+                      );
+                    }).toList(),
                   );
-                }).toList(),
+                },
               ),
             ],
           ),
         ),
       ),
 
-      // ➕ Floating upload button
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.oceanBlue,
-        onPressed: () {
-          showDialog(
+        onPressed: () async {
+          await showDialog(
             context: context,
             builder: (context) => const FileUploadDialog(),
           );
+          _refreshMaterials();
         },
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
+  }
+
+  String _formatTimeDifference(DateTime uploadedAt) {
+    final diff = DateTime.now().difference(uploadedAt);
+    if (diff.inDays >= 1) return "${diff.inDays} day(s) ago";
+    if (diff.inHours >= 1) return "${diff.inHours} hour(s) ago";
+    if (diff.inMinutes >= 1) return "${diff.inMinutes} min(s) ago";
+    return "Just now";
+  }
+
+  String _formatFileSize(dynamic sizeInBytes) {
+    if (sizeInBytes == null) return "—";
+
+    double size = sizeInBytes.toDouble();
+
+    if (size < 1024) {
+      return "${size.toStringAsFixed(1)} B";
+    } else if (size < 1024 * 1024) {
+      return "${(size / 1024).toStringAsFixed(1)} KB";
+    } else if (size < 1024 * 1024 * 1024) {
+      return "${(size / (1024 * 1024)).toStringAsFixed(1)} MB";
+    } else {
+      return "${(size / (1024 * 1024 * 1024)).toStringAsFixed(2)} GB";
+    }
+  }
+
+  String _normalizeFilter(String filter) {
+    switch (filter.toLowerCase()) {
+      case "notes":
+        return "notes";
+      case "pdfs":
+        return "pdf";
+      case "videos":
+        return "video";
+      case "images":
+        return "image";
+      default:
+        return filter.toLowerCase();
+    }
   }
 }

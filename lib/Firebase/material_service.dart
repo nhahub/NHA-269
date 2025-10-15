@@ -29,13 +29,13 @@ class MaterialService {
           .doc(user.uid)
           .collection('materials')
           .add({
-        'name': name,
-        'type': type,
-        'subject': subject,
-        'size': size,
-        'link': link,
-        'uploadedAt': FieldValue.serverTimestamp(),
-      });
+            'name': name,
+            'type': type,
+            'subject': subject,
+            'size': size,
+            'link': link,
+            'uploadedAt': FieldValue.serverTimestamp(),
+          });
     } catch (e) {
       throw Exception("Failed to upload material: $e");
     }
@@ -56,9 +56,14 @@ class MaterialService {
           .orderBy('uploadedAt', descending: true)
           .get();
 
-      return querySnapshot.docs
-          .map((doc) => {'id': doc.id, ...doc.data()})
-          .toList();
+      return querySnapshot.docs.map((doc) {
+        final data = doc.data();
+        final uploadedAt = data['uploadedAt'];
+        if (uploadedAt is Timestamp) {
+          data['uploadedAt'] = uploadedAt.toDate(); // Convert to DateTime
+        }
+        return {'id': doc.id, ...data};
+      }).toList();
     } catch (e) {
       throw Exception("Failed to fetch materials: $e");
     }

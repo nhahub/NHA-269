@@ -6,8 +6,7 @@ class MaterialItemCard extends StatelessWidget {
   final String subject;
   final String size;
   final String time;
-  final Color color;
-  final IconData icon;
+  final String type;
 
   const MaterialItemCard({
     super.key,
@@ -15,23 +14,54 @@ class MaterialItemCard extends StatelessWidget {
     required this.subject,
     required this.size,
     required this.time,
-    required this.color,
-    required this.icon,
+    required this.type,
   });
+
+  /// Chooses the color based on material type
+  Color get _typeColor {
+    switch (type.toLowerCase()) {
+      case 'notes':
+        return AppColors.teal;
+      case 'pdf':
+        return AppColors.mintGreen;
+      case 'video':
+        return AppColors.oceanBlue;
+      case 'image':
+        return AppColors.grey; 
+      default:
+        return AppColors.black;
+    }
+  }
+
+  /// Chooses the icon based on material type
+  IconData get _typeIcon {
+    switch (type.toLowerCase()) {
+      case 'notes':
+        return Icons.note;
+      case 'pdf':
+        return Icons.picture_as_pdf;
+      case 'video':
+        return Icons.videocam;
+      case 'image':
+        return Icons.image;
+      default:
+        return Icons.insert_drive_file;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withAlpha(13),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            color: Colors.black.withAlpha(10),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -39,14 +69,15 @@ class MaterialItemCard extends StatelessWidget {
         children: [
           // Icon with colored circular background
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: color.withAlpha(30),
+              color: _typeColor.withAlpha(30),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: color, size: 28),
+            child: Icon(_typeIcon, color: _typeColor, size: 22),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 12),
+
           // Title and Subject
           Expanded(
             child: Column(
@@ -56,22 +87,26 @@ class MaterialItemCard extends StatelessWidget {
                   title,
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
-                    fontSize: 16,
+                    fontSize: 14,
                     color: AppColors.deepSapphire,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Text(
                   subject,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: AppColors.grey,
-                    fontSize: 14,
+                    fontSize: 12,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 12),
+
+          const SizedBox(width: 8),
+
           // Size and Time
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -81,20 +116,38 @@ class MaterialItemCard extends StatelessWidget {
                 style: const TextStyle(
                   color: AppColors.deepSapphire,
                   fontWeight: FontWeight.w500,
+                  fontSize: 12,
                 ),
               ),
               Text(
                 time,
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.grey,
-                  fontSize: 12,
+                  fontSize: 11,
                 ),
               ),
             ],
           ),
-          const SizedBox(width: 12),
-          // Download icon
-          Icon(Icons.download_rounded, color: AppColors.oceanBlue),
+
+          const SizedBox(width: 4),
+
+          // Actions
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.download_rounded,
+                    color: AppColors.oceanBlue, size: 20),
+                tooltip: 'Download',
+                onPressed: () {}, // empty for now
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete_outline,
+                    color: Colors.redAccent, size: 20),
+                tooltip: 'Delete',
+                onPressed: () {}, // empty for now
+              ),
+            ],
+          ),
         ],
       ),
     );

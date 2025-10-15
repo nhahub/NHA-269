@@ -210,6 +210,8 @@ class _FileUploadDialogState extends State<FileUploadDialog> {
                   _buildTypeButton("PDF"),
                   const SizedBox(width: 8),
                   _buildTypeButton("Video"),
+                  const SizedBox(width: 8),
+                  _buildTypeButton("Image"),
                 ],
               ),
               const SizedBox(height: 16),
