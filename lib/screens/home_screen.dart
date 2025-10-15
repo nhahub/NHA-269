@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../Widgets/HomeWidgets/buildFeatureCard.dart';
-import '../Widgets/HomeWidgets/buildOverviewItem.dart';
-import '../Widgets/HomeWidgets/buildScheduleCard.dart';
+import '../Widgets/HomeWidgets/build_feature_card.dart';
+import '../Widgets/HomeWidgets/build_overview_item.dart';
+import '../Widgets/HomeWidgets/build_schedule_card.dart';
 import '../theme/app_colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

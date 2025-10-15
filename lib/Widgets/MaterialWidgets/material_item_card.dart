@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../theme/app_colors.dart';
 
 class MaterialItemCard extends StatelessWidget {
@@ -7,6 +8,7 @@ class MaterialItemCard extends StatelessWidget {
   final String size;
   final String time;
   final String type;
+  final String link;
 
   const MaterialItemCard({
     super.key,
@@ -15,9 +17,9 @@ class MaterialItemCard extends StatelessWidget {
     required this.size,
     required this.time,
     required this.type,
+    required this.link,
   });
 
-  /// Chooses the color based on material type
   Color get _typeColor {
     switch (type.toLowerCase()) {
       case 'notes':
@@ -27,13 +29,12 @@ class MaterialItemCard extends StatelessWidget {
       case 'video':
         return AppColors.oceanBlue;
       case 'image':
-        return AppColors.grey; 
+        return AppColors.grey;
       default:
         return AppColors.black;
     }
   }
 
-  /// Chooses the icon based on material type
   IconData get _typeIcon {
     switch (type.toLowerCase()) {
       case 'notes':
@@ -46,6 +47,19 @@ class MaterialItemCard extends StatelessWidget {
         return Icons.image;
       default:
         return Icons.insert_drive_file;
+    }
+  }
+
+  Future<void> _openLink() async {
+    try {
+      final uri = Uri.parse(link);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        debugPrint("Cannot open URL: $link");
+      }
+    } catch (e) {
+      debugPrint("Failed to open link: $e");
     }
   }
 
@@ -67,7 +81,6 @@ class MaterialItemCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          // Icon with colored circular background
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
@@ -77,8 +90,6 @@ class MaterialItemCard extends StatelessWidget {
             child: Icon(_typeIcon, color: _typeColor, size: 22),
           ),
           const SizedBox(width: 12),
-
-          // Title and Subject
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,19 +106,13 @@ class MaterialItemCard extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   subject,
-                  style: const TextStyle(
-                    color: AppColors.grey,
-                    fontSize: 12,
-                  ),
+                  style: const TextStyle(color: AppColors.grey, fontSize: 12),
                   overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
           ),
-
           const SizedBox(width: 8),
-
-          // Size and Time
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -121,30 +126,30 @@ class MaterialItemCard extends StatelessWidget {
               ),
               Text(
                 time,
-                style: const TextStyle(
-                  color: AppColors.grey,
-                  fontSize: 11,
-                ),
+                style: const TextStyle(color: AppColors.grey, fontSize: 11),
               ),
             ],
           ),
-
           const SizedBox(width: 4),
-
-          // Actions
           Row(
             children: [
               IconButton(
-                icon: const Icon(Icons.download_rounded,
-                    color: AppColors.oceanBlue, size: 20),
-                tooltip: 'Download',
-                onPressed: () {}, // empty for now
+                icon: const Icon(
+                  Icons.download_rounded,
+                  color: AppColors.oceanBlue,
+                  size: 20,
+                ),
+                tooltip: 'Open in browser',
+                onPressed: _openLink,
               ),
               IconButton(
-                icon: const Icon(Icons.delete_outline,
-                    color: Colors.redAccent, size: 20),
+                icon: const Icon(
+                  Icons.delete_outline,
+                  color: Colors.redAccent,
+                  size: 20,
+                ),
                 tooltip: 'Delete',
-                onPressed: () {}, // empty for now
+                onPressed: () {},
               ),
             ],
           ),
