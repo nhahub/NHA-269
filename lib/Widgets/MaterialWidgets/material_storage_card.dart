@@ -2,21 +2,34 @@ import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
 
 class MaterialStorageCard extends StatelessWidget {
-  final String usedStorage;
-  final String totalStorage;
+  final double usedStorage; // in bytes
+  final double totalStorage; // in GB
   final int filesCount;
-  final double progress;
 
   const MaterialStorageCard({
     super.key,
     required this.usedStorage,
     required this.totalStorage,
     required this.filesCount,
-    required this.progress,
   });
+
+  // Convert size to human-readable string
+  String _formatSize(double sizeInBytes) {
+    if (sizeInBytes < 1024) return "${sizeInBytes.toStringAsFixed(0)} B";
+    sizeInBytes /= 1024;
+    if (sizeInBytes < 1024) return "${sizeInBytes.toStringAsFixed(1)} KB";
+    sizeInBytes /= 1024;
+    if (sizeInBytes < 1024) return "${sizeInBytes.toStringAsFixed(1)} MB";
+    sizeInBytes /= 1024;
+    return "${sizeInBytes.toStringAsFixed(2)} GB";
+  }
 
   @override
   Widget build(BuildContext context) {
+    // Convert totalStorage from GB to bytes for progress calculation
+    final totalBytes = totalStorage * 1024 * 1024 * 1024;
+    final progress = (usedStorage / totalBytes).clamp(0.0, 1.0);
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -33,7 +46,7 @@ class MaterialStorageCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             "Storage Used",
             style: TextStyle(
               color: AppColors.grey,
@@ -46,7 +59,7 @@ class MaterialStorageCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "$usedStorage of $totalStorage",
+                "${_formatSize(usedStorage)} of ${_formatSize(totalBytes)}",
                 style: const TextStyle(
                   color: AppColors.deepSapphire,
                   fontWeight: FontWeight.w600,
@@ -54,7 +67,7 @@ class MaterialStorageCard extends StatelessWidget {
               ),
               Text(
                 "$filesCount files",
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.grey,
                   fontSize: 14,
                 ),
@@ -68,7 +81,7 @@ class MaterialStorageCard extends StatelessWidget {
               value: progress,
               minHeight: 8,
               backgroundColor: AppColors.lightGrey,
-              valueColor: AlwaysStoppedAnimation(AppColors.mintGreen),
+              valueColor: const AlwaysStoppedAnimation(AppColors.mintGreen),
             ),
           ),
         ],

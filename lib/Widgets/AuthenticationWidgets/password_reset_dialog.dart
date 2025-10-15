@@ -105,7 +105,7 @@ class _PasswordResetDialogState extends State<PasswordResetDialog> {
                         horizontal: 12,
                       ),
                       decoration: BoxDecoration(
-                        color: _messageColor.withOpacity(0.1),
+                        color: _messageColor.withAlpha((0.1 * 255).round()),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(

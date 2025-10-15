@@ -154,7 +154,7 @@ class _TimetableScreenState extends State<TimetableScreen> {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
+                  color: Colors.black.withAlpha((0.05 * 255).round()),
                   blurRadius: 4,
                   offset: const Offset(0, 2),
                 ),
@@ -199,7 +199,7 @@ class _TimetableScreenState extends State<TimetableScreen> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withAlpha((0.08 * 255).round()),
             blurRadius: 6,
             offset: const Offset(0, 3),
           ),
@@ -272,7 +272,7 @@ class _TimetableScreenState extends State<TimetableScreen> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withAlpha((0.08 * 255).round()),
             blurRadius: 6,
             offset: const Offset(0, 3),
           ),
@@ -281,8 +281,8 @@ class _TimetableScreenState extends State<TimetableScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          _buildOverviewItem('18', 'Total Hours', AppColors.teal.withOpacity(0.1)),
-          _buildOverviewItem('12', 'Classes', AppColors.oceanBlue.withOpacity(0.1)),
+          _buildOverviewItem('18', 'Total Hours', AppColors.teal.withAlpha((0.1 * 255).round())),
+          _buildOverviewItem('12', 'Classes', AppColors.oceanBlue.withAlpha((0.1 * 255).round())),
         ],
       ),
     );

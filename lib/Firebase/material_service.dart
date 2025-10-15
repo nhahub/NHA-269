@@ -87,4 +87,54 @@ class MaterialService {
       throw Exception("Failed to delete material: $e");
     }
   }
+
+  Future<int> getTotalStorageUsed() async {
+  final user = _auth.currentUser;
+  if (user == null) {
+    throw Exception("No user is currently signed in.");
+  }
+
+  try {
+    final querySnapshot = await _firestore
+        .collection('users')
+        .doc(user.uid)
+        .collection('materials')
+        .get();
+
+    int totalBytes = 0;
+    for (var doc in querySnapshot.docs) {
+      final data = doc.data();
+      final size = data['size'];
+      if (size != null && size is int) {
+        totalBytes += size;
+      }
+    }
+
+    return totalBytes;
+  } catch (e) {
+    throw Exception("Failed to calculate total storage used: $e");
+  }
 }
+
+/// Counts the total number of materials uploaded by the current user.
+Future<int> getTotalFilesCount() async {
+  final user = _auth.currentUser;
+  if (user == null) {
+    throw Exception("No user is currently signed in.");
+  }
+
+  try {
+    final querySnapshot = await _firestore
+        .collection('users')
+        .doc(user.uid)
+        .collection('materials')
+        .get();
+
+    return querySnapshot.docs.length;
+  } catch (e) {
+    throw Exception("Failed to get total files count: $e");
+  }
+}
+
+}
+

@@ -24,7 +24,6 @@ class _FileUploadDialogState extends State<FileUploadDialog> {
   bool _isUploading = false;
   String? _message;
   Color _messageColor = AppColors.grey;
-  String? _uploadedLink;
   String? _selectedMaterialType; // "Notes", "PDFs", or "Videos"
 
   final _formKey = GlobalKey<FormState>();
@@ -41,7 +40,6 @@ class _FileUploadDialogState extends State<FileUploadDialog> {
       _selectedFilePath = null;
       _originalFileName = null;
       _message = null;
-      _uploadedLink = null;
     });
 
     final result = await FilePicker.platform.pickFiles();
@@ -62,7 +60,6 @@ class _FileUploadDialogState extends State<FileUploadDialog> {
     try {
       final data = jsonDecode(responseBody) as Map<String, dynamic>;
       if (data['success'] == true) {
-        setState(() => _uploadedLink = data['fileUrl']);
         _setMessage('File uploaded successfully!', AppColors.teal);
 
         //  Save metadata to Firestore
@@ -97,7 +94,6 @@ class _FileUploadDialogState extends State<FileUploadDialog> {
     final fileName = _fileNameController.text.trim();
     setState(() {
       _isUploading = true;
-      _uploadedLink = null;
       _message = "Uploading, please wait...";
       _messageColor = AppColors.oceanBlue;
     });
