@@ -4,6 +4,7 @@ import '../Widgets/MaterialWidgets/material_item_card.dart';
 import '../Widgets/MaterialWidgets/material_search_bar.dart';
 import '../Widgets/MaterialWidgets/material_storage_card.dart';
 import '../theme/app_colors.dart';
+import 'package:learnflow/Widgets/MaterialWidgets/file_upload_dialog.dart'; // <-- Import the upload dialog
 
 class MaterialsScreen extends StatefulWidget {
   const MaterialsScreen({super.key});
@@ -106,18 +107,16 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
           ],
         ),
       ),
+
+      // 📦 Main body
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              // Search bar
-              MaterialSearchBar(
-                onChanged: (value) {},
-              ),
+              MaterialSearchBar(onChanged: (value) {}),
               const SizedBox(height: 16),
 
-              // Filter bar
               MaterialFilterBar(
                 selected: selectedFilter,
                 onFilterChanged: (filter) {
@@ -126,7 +125,6 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Storage card
               const MaterialStorageCard(
                 usedStorage: "156.8 MB",
                 totalStorage: "2 GB",
@@ -135,7 +133,6 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Material items list
               Column(
                 children: filteredMaterials.map((item) {
                   return MaterialItemCard(
@@ -151,6 +148,18 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
             ],
           ),
         ),
+      ),
+
+      // ➕ Floating upload button
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.oceanBlue,
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) => const FileUploadDialog(),
+          );
+        },
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

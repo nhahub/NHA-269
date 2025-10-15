@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:learnflow/Firebase/auth_wrapper.dart';
@@ -12,9 +13,7 @@ import 'package:learnflow/screens/tasks_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -32,8 +31,8 @@ class MyApp extends StatelessWidget {
         '/settings': (context) => const SettingsScreen(),
         '/timetable': (context) => TimetableScreen(),
         '/tasks': (context) => const TasksScreen(),
-        '/Focus':(context)=>const FocusScreen(),
-        '/Material':(context)=>const MaterialsScreen()
+        '/Focus': (context) => const FocusScreen(),
+        '/Material': (context) => const MaterialsScreen(),
       },
     );
   }
