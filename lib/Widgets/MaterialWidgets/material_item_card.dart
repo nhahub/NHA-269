@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:learnflow/Widgets/MaterialWidgets/delete_material_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../theme/app_colors.dart';
 
@@ -8,8 +9,11 @@ class MaterialItemCard extends StatelessWidget {
   final String size;
   final String time;
   final String type;
-  final String link;
+  final String url;
+  final String fileId;
+  final String materialId;
 
+  final VoidCallback? onDeleted;
   const MaterialItemCard({
     super.key,
     required this.title,
@@ -17,7 +21,10 @@ class MaterialItemCard extends StatelessWidget {
     required this.size,
     required this.time,
     required this.type,
-    required this.link,
+    required this.url,
+    required this.fileId,
+    required this.materialId,
+    this.onDeleted,
   });
 
   Color get _typeColor {
@@ -52,11 +59,11 @@ class MaterialItemCard extends StatelessWidget {
 
   Future<void> _openLink() async {
     try {
-      final uri = Uri.parse(link);
+      final uri = Uri.parse(url);
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
-        debugPrint("Cannot open URL: $link");
+        debugPrint("Cannot open URL: $url");
       }
     } catch (e) {
       debugPrint("Failed to open link: $e");
@@ -149,7 +156,20 @@ class MaterialItemCard extends StatelessWidget {
                   size: 20,
                 ),
                 tooltip: 'Delete',
-                onPressed: () {},
+                onPressed: () async {
+                  final result = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => DeleteMaterialDialog(
+                      materialId: materialId,
+                      fileId: fileId,
+                    ),
+                  );
+
+                  // 👇 If deletion successful, trigger parent refresh
+                  if (result == true && onDeleted != null) {
+                    onDeleted!();
+                  }
+                },
               ),
             ],
           ),

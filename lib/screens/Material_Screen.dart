@@ -200,7 +200,10 @@ class _MaterialsScreenState extends State<MaterialsScreen> {
                             ? _formatTimeDifference(item["uploadedAt"])
                             : "Unknown",
                         type: item["type"] ?? "Unknown",
-                        link: item["link"],
+                        url: item["url"] ?? "Unknown",
+                        fileId: item["fileId"] ?? "Unknown",
+                        materialId: item["id"] ?? "Unknown",
+                        onDeleted: _refreshMaterials,
                       );
                     }).toList(),
                   );

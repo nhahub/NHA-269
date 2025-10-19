@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:learnflow/Firebase/material_service.dart';
 import 'package:learnflow/Widgets/Shared/text_field.dart';
@@ -68,7 +69,8 @@ class _FileUploadDialogState extends State<FileUploadDialog> {
           type: _selectedMaterialType!,
           subject: _subjectController.text.trim(),
           size: File(_selectedFilePath!).lengthSync(),
-          link: data['fileUrl'],
+          url: data['fileUrl'],
+          fileId: data['fileId']
         );
 
       } else {
@@ -109,13 +111,13 @@ class _FileUploadDialogState extends State<FileUploadDialog> {
           : '';
       final finalFileName = '$fileName$extension';
 
-      const String scriptUrl =
-          'https://script.google.com/macros/s/AKfycbxouEILiOJ8P632jrqBtyULoFu0ylIktgf99Xw58WOWy2pNRXxtPEcN53m_YUq9-Le8/exec';
+      final scriptUrl = dotenv.env['driveScriptUrl']!;
       final uri = Uri.parse(scriptUrl);
 
       final request = http.Request('POST', uri)
         ..headers['Content-Type'] = 'application/json; charset=UTF-8'
         ..body = jsonEncode({
+          "action": "upload",
           'fileName': finalFileName,
           'mimeType': mimeType,
           'fileData': base64File,
