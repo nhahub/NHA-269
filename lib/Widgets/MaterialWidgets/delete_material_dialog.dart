@@ -47,6 +47,7 @@ class _DeleteMaterialDialogState extends State<DeleteMaterialDialog> {
 
       // Give the message a moment to show before closing the dialog
       await Future.delayed(const Duration(seconds: 2));
+      // ignore: use_build_context_synchronously
       if (mounted) Navigator.of(context).pop(true);
     } catch (e) {
       _setMessage('Error deleting material: $e', Colors.redAccent);
@@ -87,7 +88,7 @@ class _DeleteMaterialDialogState extends State<DeleteMaterialDialog> {
                   horizontal: 12,
                 ),
                 decoration: BoxDecoration(
-                  color: _messageColor.withOpacity(0.1),
+                  color: _messageColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(

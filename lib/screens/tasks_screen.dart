@@ -1,11 +1,89 @@
 import 'package:flutter/material.dart';
 import '../Widgets/TasksWidgets/progress_overview.dart';
 import '../Widgets/TasksWidgets/section_title.dart';
-import '../Widgets/TasksWidgets/task_card.dart';
+import '../Widgets/TasksWidgets/task_list_widget.dart';
 import '../theme/app_colors.dart';
+import '../FireBase/task_service.dart';
+import '../Widgets/TasksWidgets/task_screen_methods.dart';
 
-class TasksScreen extends StatelessWidget {
+class TasksScreen extends StatefulWidget {
   const TasksScreen({super.key});
+
+  @override
+  State<TasksScreen> createState() => _TasksScreenState();
+}
+
+class _TasksScreenState extends State<TasksScreen> {
+  final TaskService _taskService = TaskService();
+  bool _isInitialLoading = true;
+  bool _isReloading = false;
+  List<Map<String, dynamic>> _allTasks = [];
+  int _completedTasks = 0;
+  int _pendingTasks = 0;
+  int _overdueTasks = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadTasks(isInitial: true);
+  }
+
+  Future<void> _loadTasks({bool isInitial = false}) async {
+    await TaskScreenMethods.loadTasks(
+      context: context,
+      taskService: _taskService,
+      isInitial: isInitial,
+      onLoadingStateChange: (isInitial, isReloading) {
+        setState(() {
+          _isInitialLoading = isInitial;
+          _isReloading = isReloading;
+        });
+      },
+      onDataLoaded: (tasks, completed, pending, overdue) {
+        setState(() {
+          _allTasks = tasks;
+          _completedTasks = completed;
+          _pendingTasks = pending;
+          _overdueTasks = overdue;
+        });
+      },
+    );
+  }
+
+  Future<void> _toggleTask(String taskId, bool currentStatus) async {
+    await TaskScreenMethods.toggleTask(
+      context: context,
+      taskService: _taskService,
+      taskId: taskId,
+      currentStatus: currentStatus,
+      onSuccess: () => _loadTasks(),
+    );
+  }
+
+  Future<void> _deleteTask(String taskId, String title) async {
+    await TaskScreenMethods.deleteTask(
+      context: context,
+      taskService: _taskService,
+      taskId: taskId,
+      title: title,
+      onSuccess: () => _loadTasks(),
+    );
+  }
+
+  void _editTask(Map<String, dynamic> task) {
+    TaskScreenMethods.editTask(
+      context: context,
+      task: task,
+      onSuccess: () => _loadTasks(),
+    );
+  }
+
+  Future<void> _createNewTask() async {
+    await TaskScreenMethods.createNewTask(
+      context: context,
+      onSuccess: () => _loadTasks(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,109 +107,115 @@ class TasksScreen extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               'Manage your assignments',
-              style: TextStyle(
-                color: AppColors.grey,
-                fontSize: 13,
-              ),
+              style: TextStyle(color: AppColors.grey, fontSize: 13),
             ),
           ],
         ),
         actions: [
           IconButton(
-            icon: const Icon(
-              Icons.calendar_today_outlined,
-              color: AppColors.deepSapphire,
-            ),
-            onPressed: () {
-              // TODO: calendar action
-            },
+            icon: const Icon(Icons.refresh, color: AppColors.deepSapphire),
+            onPressed: () => _loadTasks(),
           ),
         ],
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const ProgressOverview(),
-              const SizedBox(height: 20),
-              const SectionTitle(title: 'Pending Tasks'),
-              const SizedBox(height: 8),
-              const _TaskList(pending: true),
-              const SizedBox(height: 20),
-              const SectionTitle(title: 'Completed Tasks'),
-              const SizedBox(height: 8),
-              const _TaskList(pending: false),
-              const SizedBox(height: 20),
-            ],
-          ),
-        ),
+      body: _isInitialLoading
+          ? const Center(
+              child: CircularProgressIndicator(color: AppColors.oceanBlue),
+            )
+          : Stack(
+              children: [
+                SafeArea(
+                  child: RefreshIndicator(
+                    onRefresh: _loadTasks,
+                    color: AppColors.oceanBlue,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ProgressOverview(
+                            pendingTasks: _pendingTasks,
+                            completedTasks: _completedTasks,
+                            overdueTasks: _overdueTasks,
+                          ),
+                          const SizedBox(height: 20),
+                          const SectionTitle(title: 'Pending Tasks'),
+                          const SizedBox(height: 8),
+                          TaskListWidget(
+                            tasks: _allTasks
+                                .where((t) => t['done'] == false)
+                                .toList(),
+                            onToggle: _toggleTask,
+                            onEdit: _editTask,
+                            onDelete: _deleteTask,
+                          ),
+                          const SizedBox(height: 20),
+                          const SectionTitle(title: 'Completed Tasks'),
+                          const SizedBox(height: 8),
+                          TaskListWidget(
+                            tasks: _allTasks
+                                .where((t) => t['done'] == true)
+                                .toList(),
+                            onToggle: _toggleTask,
+                            onEdit: _editTask,
+                            onDelete: _deleteTask,
+                          ),
+                          const SizedBox(height: 80),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                // Subtle loading overlay during reload
+                if (_isReloading)
+                  Positioned.fill(
+                    child: Container(
+                      color: Colors.black.withValues(alpha: 0.1),
+                      child: Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.1),
+                                blurRadius: 10,
+                                spreadRadius: 2,
+                              ),
+                            ],
+                          ),
+                          child: const Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CircularProgressIndicator(
+                                color: AppColors.oceanBlue,
+                              ),
+                              SizedBox(height: 16),
+                              Text(
+                                'Updating...',
+                                style: TextStyle(
+                                  color: AppColors.deepSapphire,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _createNewTask,
+        backgroundColor: AppColors.oceanBlue,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
-  }
-}
-
-class _TaskList extends StatelessWidget {
-  final bool pending;
-  const _TaskList({required this.pending});
-
-  @override
-  Widget build(BuildContext context) {
-    final tasks = pending
-        ? [
-            TaskCard(
-              title: "Complete Calculus Assignment",
-              subtitle: "Chapter 5 exercises 1-20",
-              subject: "Mathematics",
-              dueText: "Due Today",
-              priority: "High",
-              priorityColor: Colors.red,
-              tagColor: Colors.green,
-            ),
-            TaskCard(
-              title: "Physics Lab Report",
-              subtitle: "Wave motion experiment analysis",
-              subject: "Physics",
-              dueText: "Due Tomorrow",
-              priority: "High",
-              priorityColor: Colors.red,
-              tagColor: Colors.teal,
-            ),
-            TaskCard(
-              title: "Chemistry Practice Problems",
-              subtitle: "Organic compounds worksheet",
-              subject: "Chemistry",
-              dueText: "Due Dec 10",
-              priority: "Medium",
-              priorityColor: Colors.orange,
-              tagColor: Colors.amber,
-            ),
-            TaskCard(
-              title: "English Essay Draft",
-              subtitle: "Shakespeare analysis - 1500 words",
-              subject: "English",
-              dueText: "Due Dec 12",
-              priority: "Low",
-              priorityColor: Colors.green,
-              tagColor: Colors.blue,
-            ),
-          ]
-        : [
-            TaskCard(
-              title: "Read History Chapter 8",
-              subtitle: "",
-              subject: "History",
-              done: true,
-            ),
-            TaskCard(
-              title: "Biology Diagram Drawing",
-              subtitle: "",
-              subject: "Biology",
-              done: true,
-            ),
-          ];
-
-    return Column(children: tasks);
   }
 }
