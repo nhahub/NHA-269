@@ -14,9 +14,35 @@ class ScheduleCard extends StatelessWidget {
     required this.onDelete,
   });
 
+  /// Format 24-hour time to 12-hour format with AM/PM
+  String _formatTime12Hour(String time24) {
+    try {
+      final parts = time24.split(':');
+      if (parts.length != 2) return time24;
+      
+      int hour = int.parse(parts[0]);
+      final minute = parts[1];
+      
+      final period = hour >= 12 ? 'PM' : 'AM';
+      
+      // Convert to 12-hour format
+      if (hour == 0) {
+        hour = 12; // Midnight
+      } else if (hour > 12) {
+        hour = hour - 12;
+      }
+      
+      return '$hour:$minute $period';
+    } catch (e) {
+      return time24; // Return original if parsing fails
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final color = Color(int.parse(entry['color']));
+    final formattedStartTime = _formatTime12Hour(entry['startTime']);
+    final formattedEndTime = _formatTime12Hour(entry['endTime']);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
@@ -91,7 +117,7 @@ class ScheduleCard extends StatelessWidget {
                             size: 14, color: AppColors.grey),
                         const SizedBox(width: 4),
                         Text(
-                          '${entry['startTime']} - ${entry['endTime']}',
+                          '$formattedStartTime - $formattedEndTime',
                           style: const TextStyle(fontSize: 13, color: AppColors.grey),
                         ),
                         const SizedBox(width: 12),

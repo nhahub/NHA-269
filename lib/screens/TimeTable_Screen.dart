@@ -46,7 +46,7 @@ class _TimetableScreenState extends State<TimetableScreen> {
 
       // Organize entries by day
       Map<String, List<Map<String, dynamic>>> organized = {
-        for (var day in _days) day: []
+        for (var day in _days) day: [],
       };
 
       for (var entry in allEntries) {
@@ -56,10 +56,14 @@ class _TimetableScreenState extends State<TimetableScreen> {
         }
       }
 
-      // Sort entries by start time
+      // Sort entries by start time (properly parse time for correct sorting)
       for (var day in organized.keys) {
         organized[day]!.sort((a, b) {
-          return a['startTime'].compareTo(b['startTime']);
+          final timeA = _parseTimeForSorting(a['startTime']);
+          final timeB = _parseTimeForSorting(b['startTime']);
+
+          if (timeA == null || timeB == null) return 0;
+          return timeA.compareTo(timeB);
         });
       }
 
@@ -149,9 +153,9 @@ class _TimetableScreenState extends State<TimetableScreen> {
         backgroundColor: AppColors.lightGrey,
         elevation: 0,
         toolbarHeight: 60,
-        title: Column(
+        title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
               'Timetable',
               style: TextStyle(
@@ -163,10 +167,7 @@ class _TimetableScreenState extends State<TimetableScreen> {
             SizedBox(height: 4),
             Text(
               'Manage your weekly schedule',
-              style: TextStyle(
-                color: AppColors.grey,
-                fontSize: 13,
-              ),
+              style: TextStyle(color: AppColors.grey, fontSize: 13),
             ),
           ],
         ),
@@ -189,7 +190,10 @@ class _TimetableScreenState extends State<TimetableScreen> {
                     color: AppColors.oceanBlue,
                     child: SingleChildScrollView(
                       physics: const AlwaysScrollableScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -209,6 +213,28 @@ class _TimetableScreenState extends State<TimetableScreen> {
                               color: AppColors.deepSapphire,
                             ),
                           ),
+                          if (todaySchedule.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4, bottom: 8),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.swipe_right,
+                                    size: 12,
+                                    color: AppColors.grey.withOpacity(0.6),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Swipe to edit or delete',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: AppColors.grey.withOpacity(0.7),
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           const SizedBox(height: 12),
                           todaySchedule.isEmpty
                               ? Container(
@@ -298,5 +324,20 @@ class _TimetableScreenState extends State<TimetableScreen> {
         child: const Icon(Icons.add, color: Colors.white),
       ),
     );
+  }
+
+  /// Parse time string to minutes since midnight for proper sorting
+  int? _parseTimeForSorting(String time) {
+    try {
+      final parts = time.split(':');
+      if (parts.length != 2) return null;
+      final hour = int.parse(parts[0]);
+      final minute = int.parse(parts[1]);
+
+      // Convert to minutes since midnight (0:00)
+      return hour * 60 + minute;
+    } catch (e) {
+      return null;
+    }
   }
 }
