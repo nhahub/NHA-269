@@ -87,6 +87,10 @@ class _TasksScreenState extends State<TasksScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final pendingTasksList = _allTasks.where((t) => t['done'] == false).toList();
+    final completedTasksList = _allTasks.where((t) => t['done'] == true).toList();
+    final hasAnyTasks = pendingTasksList.isNotEmpty || completedTasksList.isNotEmpty;
+
     return Scaffold(
       backgroundColor: AppColors.lightGrey,
       appBar: AppBar(
@@ -144,11 +148,31 @@ class _TasksScreenState extends State<TasksScreen> {
                           ),
                           const SizedBox(height: 20),
                           const SectionTitle(title: 'Pending Tasks'),
+                          if (hasAnyTasks)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4, bottom: 4),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.swipe_right,
+                                    size: 12,
+                                    color: AppColors.grey.withOpacity(0.6),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Swipe to edit or delete',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: AppColors.grey.withOpacity(0.7),
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           const SizedBox(height: 8),
                           TaskListWidget(
-                            tasks: _allTasks
-                                .where((t) => t['done'] == false)
-                                .toList(),
+                            tasks: pendingTasksList,
                             onToggle: _toggleTask,
                             onEdit: _editTask,
                             onDelete: _deleteTask,
@@ -157,9 +181,7 @@ class _TasksScreenState extends State<TasksScreen> {
                           const SectionTitle(title: 'Completed Tasks'),
                           const SizedBox(height: 8),
                           TaskListWidget(
-                            tasks: _allTasks
-                                .where((t) => t['done'] == true)
-                                .toList(),
+                            tasks: completedTasksList,
                             onToggle: _toggleTask,
                             onEdit: _editTask,
                             onDelete: _deleteTask,
