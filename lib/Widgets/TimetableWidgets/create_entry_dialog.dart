@@ -116,6 +116,50 @@ class _CreateEntryDialogState extends State<CreateEntryDialog> {
     }
   }
 
+  Widget _buildTimeButton({
+    required String label,
+    required String? time,
+    required VoidCallback onPressed,
+  }) {
+    return Expanded(
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.oceanBlue,
+            foregroundColor: AppColors.white,
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            elevation: 0,
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.access_time,
+                size: 16,
+                color: AppColors.white,
+              ),
+              const SizedBox(width: 6),
+              Text(
+                time ?? label,
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: AppColors.white,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -166,10 +210,37 @@ class _CreateEntryDialogState extends State<CreateEntryDialog> {
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: AppColors.deepSapphire, width: 1.5),
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: AppColors.deepSapphire, width: 1.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: const BorderSide(color: AppColors.oceanBlue, width: 2),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                  filled: true,
+                  fillColor: AppColors.white,
                 ),
-                hint: const Text('Select day'),
+                dropdownColor: AppColors.white,
+                style: const TextStyle(
+                  color: AppColors.deepSapphire,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                icon: const Icon(
+                  Icons.arrow_drop_down,
+                  color: AppColors.deepSapphire,
+                ),
+                hint: const Text(
+                  'Select day',
+                  style: TextStyle(
+                    color: AppColors.grey,
+                    fontSize: 14,
+                  ),
+                ),
                 items: _days.map((day) {
                   return DropdownMenuItem(
                     value: day,
@@ -183,64 +254,16 @@ class _CreateEntryDialogState extends State<CreateEntryDialog> {
               const SizedBox(height: 16),
               Row(
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Start Time',
-                          style: TextStyle(
-                            color: AppColors.deepSapphire,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        ElevatedButton.icon(
-                          onPressed: () => _selectTime(true),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.deepSapphire,
-                            foregroundColor: AppColors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                          ),
-                          icon: const Icon(Icons.access_time, size: 18),
-                          label: Text(
-                            _startTime ?? 'Select',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ),
-                      ],
-                    ),
+                  _buildTimeButton(
+                    label: 'Start Time',
+                    time: _startTime,
+                    onPressed: () => _selectTime(true),
                   ),
                   const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'End Time',
-                          style: TextStyle(
-                            color: AppColors.deepSapphire,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        ElevatedButton.icon(
-                          onPressed: () => _selectTime(false),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.deepSapphire,
-                            foregroundColor: AppColors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                          ),
-                          icon: const Icon(Icons.access_time, size: 18),
-                          label: Text(
-                            _endTime ?? 'Select',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ),
-                      ],
-                    ),
+                  _buildTimeButton(
+                    label: 'End Time',
+                    time: _endTime,
+                    onPressed: () => _selectTime(false),
                   ),
                 ],
               ),

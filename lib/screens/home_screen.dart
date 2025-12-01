@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:learnflow/Firebase/focus_service.dart';
 import '../Widgets/HomeWidgets/build_feature_card.dart';
 import '../Widgets/HomeWidgets/build_overview_item.dart';
 import '../Widgets/HomeWidgets/build_schedule_card.dart';
 import '../theme/app_colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../FireBase/task_service.dart';
-import '../FireBase/timetable_service.dart';
+import '../FireBase/timetable_service.dart';// Import Focus Service
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,9 +18,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TaskService _taskService = TaskService();
   final TimetableService _timetableService = TimetableService();
+  final FocusService _focusService = FocusService(); // Initialize Focus Service
 
   bool _isLoading = true;
   int _pendingTasks = 0;
+  int _streakDays = 0; // Variable to store streak
   String _nextClass = 'No classes today';
   String _nextClassTime = '';
   List<Map<String, dynamic>> _todaySchedule = [];
@@ -34,10 +37,13 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() => _isLoading = true);
 
     try {
-      // Get pending tasks count
+      // 1. Get pending tasks count
       final pendingCount = await _taskService.getPendingTasksCount();
 
-      // Get today's schedule
+      // 2. Get Study Streak from Focus Service
+      final streak = await _focusService.getStudyStreak();
+
+      // 3. Get today's schedule
       final now = DateTime.now();
       final dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
       final today = dayNames[now.weekday - 1];
@@ -62,9 +68,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
       setState(() {
         _pendingTasks = pendingCount;
+        _streakDays = streak; // Update state
         _nextClass = nextClass;
         _nextClassTime = nextClassTime;
-        _todaySchedule = todayEntries.take(3).toList(); // Show max 3 classes
+        _todaySchedule = todayEntries.take(3).toList();
         _isLoading = false;
       });
     } catch (e) {
@@ -93,27 +100,25 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  /// Format 24-hour time to 12-hour format with AM/PM
   String _formatTime12Hour(String time24) {
     try {
       final parts = time24.split(':');
       if (parts.length != 2) return time24;
-      
+
       int hour = int.parse(parts[0]);
       final minute = parts[1];
-      
+
       final period = hour >= 12 ? 'PM' : 'AM';
-      
-      // Convert to 12-hour format
+
       if (hour == 0) {
-        hour = 12; // Midnight
+        hour = 12;
       } else if (hour > 12) {
         hour = hour - 12;
       }
-      
+
       return '$hour:$minute $period';
     } catch (e) {
-      return time24; // Return original if parsing fails
+      return time24;
     }
   }
 
@@ -145,7 +150,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     const TextSpan(text: 'Welcome back, '),
                     TextSpan(
-                      text: '${(user?.displayName?.split(' ').first ?? 'Student')}!',
+                      text:
+                          '${(user?.displayName?.split(' ').first ?? 'Student')}!',
                       style: const TextStyle(color: AppColors.oceanBlue),
                     ),
                   ],
@@ -241,10 +247,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: AppColors.oceanBlue,
                             ),
                             const SizedBox(height: 12),
+
+                            // UPDATED STREAK ITEM
                             buildOverviewItem(
-                              icon: Icons.timeline_sharp,
+                              icon: Icons
+                                  .local_fire_department, // Changed icon to fire for streak
                               label: 'Study Streak',
-                              value: '7 days', // TODO: Implement streak tracking
+                              value: '$_streakDays days',
                               color: AppColors.mintGreen,
                             ),
                           ],
@@ -362,7 +371,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Icon(
                                           Icons.event_busy,
                                           size: 48,
-                                          color: AppColors.grey.withOpacity(0.3),
+                                          color: AppColors.grey.withOpacity(
+                                            0.3,
+                                          ),
                                         ),
                                         const SizedBox(height: 12),
                                         const Text(
@@ -381,10 +392,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                         int.parse(entry['color']),
                                       );
                                       return Padding(
-                                        padding: const EdgeInsets.only(bottom: 10),
+                                        padding: const EdgeInsets.only(
+                                          bottom: 10,
+                                        ),
                                         child: buildScheduleCard(
                                           subject: entry['subject'],
-                                          time: '${_formatTime12Hour(entry['startTime'])} - ${_formatTime12Hour(entry['endTime'])}',
+                                          time:
+                                              '${_formatTime12Hour(entry['startTime'])} - ${_formatTime12Hour(entry['endTime'])}',
                                           location: entry['location'],
                                           color: color,
                                         ),
